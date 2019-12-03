@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final PrivateChat privateChat = new PrivateChat(new UserAccount());
+        final PrivateChat privateChat = new PrivateChat();
         privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "你好", "", Message.RECEIVE));
         privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "你好你好", "", Message.SEND));
         privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "drtnb", "", Message.RECEIVE));

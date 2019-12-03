@@ -3,15 +3,17 @@ package com.example.tr.playplane;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
 public class ChatWindow extends AppCompatActivity {
 
     private PrivateChat privateChat;
-    private ArrayList<Message> dataList;
+    private ArrayList<Message> dataList = new ArrayList<Message>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,17 +23,17 @@ public class ChatWindow extends AppCompatActivity {
         Intent intent = getIntent();
         privateChat = (PrivateChat)getIntent().getSerializableExtra("privateChat");
 
-        for (String mjson : privateChat.GetMessages()
+        for (Message message : privateChat.GetMessages()
             ) {
-            dataList.add(new Message(mjson));
+            dataList.add(message);
        }
 
-       // RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
-       // StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        //recyclerView.setLayoutManager(layoutManager);
-        //ChatAdapter adapter = new ChatAdapter();
-       // adapter.replaceAll(dataList);
-       // recyclerView.setAdapter(adapter);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        ChatAdapter adapter = new ChatAdapter();
+        adapter.replaceAll(dataList);
+        recyclerView.setAdapter(adapter);
 
     }
 

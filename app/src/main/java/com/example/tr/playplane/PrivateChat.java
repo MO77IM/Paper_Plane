@@ -5,34 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrivateChat implements Serializable {
-    private UserAccount targetUser;
     private boolean isGetMessage;
 
-    private List<String> messages;
+    private List<Message> messages;
 
-    public PrivateChat(UserAccount targetUser){
-        this.targetUser = targetUser;
+    public PrivateChat(){
         isGetMessage = false;
-        messages = new ArrayList<String>();
+        messages = new ArrayList<Message>();
     }
 
     public boolean IsGetMessage() {
         return isGetMessage;
     }
 
-    public UserAccount GetTargetUser() {
-        return targetUser;
-    }
+    //public UserAccount GetTargetUser() {
+        //return targetUser;
+    //}
 
-    public List<String> GetMessages() {
+    public List<Message> GetMessages() {
         return messages;
     }
 
     public void AddMessage(Message message){
-        messages.add(message.toJSON());
-    }
-
-    public void AddMessage(String message){
         messages.add(message);
     }
 }

@@ -11,15 +11,6 @@ public class Message implements Serializable {
     private String image = "";
     private int type = SEND;
 
-    public Message(String json){
-        SimpleJSON resolver = new SimpleJSON(json);
-
-        icon = Integer.parseInt(resolver.getValue("icon"));
-        content = resolver.getValue("content");
-        image = resolver.getValue("image");
-        type = resolver.getValue("type")=="SEND" ? 0 : 1;
-    }
-
     public Message(int icon, String content, String image, int type){
         this.icon = icon;
         this.content = content;
@@ -59,13 +50,4 @@ public class Message implements Serializable {
         this.type = type;
     }
 
-    public String toJSON(){
-        String json = "{ ";
-        json += "type:" + (type == 1 ? "SEND" : "RECEIVE") + "," ;
-        json += "icon:" + icon + ",";
-        json += "content:" + content + ",";
-        json += "image" + image;
-        json +=  "}";
-        return json;
-    }
 }
