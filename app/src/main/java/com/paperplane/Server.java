@@ -1,4 +1,4 @@
-package com.example.tr.playplane;//powered by SCUDRT
+package com.paperplane;//powered by SCUDRT
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

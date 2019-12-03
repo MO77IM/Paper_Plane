@@ -1,5 +1,6 @@
-package com.example.tr.playplane;//powered by SCUDRT
+package com.paperplane;//powered by SCUDRT
 
+import com.alibaba.fastjson.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class SimpleServer implements Runnable{
                     DataInputStream input = new DataInputStream(server.getInputStream());
                     DataOutputStream output = new DataOutputStream(server.getOutputStream());
                     
-                    SimpleJSON loader = new SimpleJSON(input.readUTF());
+                    JSONObject loader = JSONObject.parseObject(input.readUTF());
                     
 
                     server.close();

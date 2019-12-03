@@ -1,4 +1,4 @@
-package com.example.tr.playplane;
+package com.paperplane;
 
 import java.io.Serializable;
 import java.util.ArrayList;
