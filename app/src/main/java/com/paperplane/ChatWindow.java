@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import com.paperplane.R;
 
@@ -14,27 +18,42 @@ import java.util.ArrayList;
 public class ChatWindow extends AppCompatActivity {
 
     private PrivateChat privateChat;
-    private ArrayList<Message> dataList = new ArrayList<Message>();
+    Button sendButton;
+    EditText input;
+    RecyclerView recyclerView;
+    ChatAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         privateChat = (PrivateChat)getIntent().getSerializableExtra("privateChat");
 
-        for (Message message : privateChat.GetMessages()
-            ) {
-            dataList.add(message);
-       }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
+        //初始化recyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ChatAdapter adapter = new ChatAdapter();
-        adapter.replaceAll(dataList);
+        adapter = new ChatAdapter(privateChat.GetMessages());
         recyclerView.setAdapter(adapter);
+
+
+        input = (EditText)findViewById(R.id.text_input);
+        sendButton = (Button)findViewById(R.id.tvSend);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Message message = new Message(R.mipmap.ic_launcher, input.getText().toString(), "", Message.SEND);
+                privateChat.SendMessage(message);
+                Log.d("Chat Window", "onClick: send button clicked");
+                adapter.notifyItemInserted(privateChat.GetMessages().size() - 1);
+                recyclerView.scrollToPosition(privateChat.GetMessages().size() - 1);
+                input.setText("");
+            }
+        });
+
 
     }
 

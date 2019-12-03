@@ -13,7 +13,12 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-    private ArrayList<Message> dataList = new ArrayList<>();
+    private ArrayList<Message> dataList;
+
+    public ChatAdapter(ArrayList<Message> dataList){
+        this.dataList = dataList;
+    }
+
 
     public void replaceAll(ArrayList<Message> list){
         dataList.clear();

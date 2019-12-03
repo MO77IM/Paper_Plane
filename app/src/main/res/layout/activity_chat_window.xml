@@ -24,6 +24,7 @@
         android:padding="4dp">
 
         <EditText
+            android:id="@+id/text_input"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -31,16 +32,16 @@
             android:paddingLeft="4dp"
             android:textSize="14sp" />
 
-        <TextView
+        <Button
             android:id="@+id/tvSend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:padding="6dp"
+            android:padding="10dp"
             android:text="发送"
-            android:textSize="10sp"/>
+            android:textSize="10sp" />
     </LinearLayout>
 
 
