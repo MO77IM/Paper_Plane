@@ -1,4 +1,7 @@
-package com.example.tr.playplane;//powered by SCUDRT
+package com.paperplane;//powered by SCUDRT
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 
@@ -13,24 +16,23 @@ public class UserAccountManager{
         return instance;
     }
     
-    public boolean signup(SimpleJSON signupMSG){
-        String id = signupMSG.getValue("userID");
+    public boolean signup(JSONObject signupMSG){
+        String id = signupMSG.getString("userID");
         if (this.getUserByID(id) != null){
             return false;
         }
 
-        UserAccount temp = new UserAccount(id, signupMSG.getValue("password"));
+        UserAccount temp = new UserAccount(id, signupMSG.getString("password"));
         this.users.add(temp);
         return true;
     }
     public boolean signup(String signupMSG){
-        return this.signup(new SimpleJSON(signupMSG));
+        return this.signup(JSON.parseObject(signupMSG));
     }
 
-
-    public boolean login(SimpleJSON loginMSG){
-        String id = loginMSG.getValue("userID");
-        String password = loginMSG.getValue("password");
+    public boolean login(JSONObject loginMSG){
+        String id = loginMSG.getString("userID");
+        String password = loginMSG.getString("password");
         UserAccount user = this.getUserByID(id);
         if (user == null){
             return false;
@@ -42,7 +44,7 @@ public class UserAccountManager{
         }
     }
     public boolean login(String loginMSG){
-        return this.login(new SimpleJSON(loginMSG));
+        return this.login(JSON.parseObject(loginMSG));
     }
 
 

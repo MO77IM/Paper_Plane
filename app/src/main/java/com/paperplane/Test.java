@@ -1,17 +1,21 @@
-package com.example.tr.playplane;// powered bu SCUDRT
+// powered bu SCUDRT
+package com.paperplane;
+
+import com.alibaba.fastjson.JSONObject;
 
 public class Test{
     public static void main(String[] args){
-        // create a new account
-        String message = "{userID: scudrt, password: 123456}";
+        JSONObject json = new JSONObject();
+        json.put("userID", "邓瑞韬啊");
+        json.put("password", "123456");
+        System.out.println(json.toJSONString());
 
-        boolean result = UserAccountManager.getInstance().signup(message);
+        boolean result = UserAccountManager.getInstance().signup(json.toJSONString());
         if (result){
             System.out.println("signup");
-            result = UserAccountManager.getInstance().login(message);
+            result = UserAccountManager.getInstance().login(json.toJSONString());
             if (result){
                 System.out.println("login");
-
             }
         }
         /*

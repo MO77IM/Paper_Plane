@@ -1,4 +1,7 @@
-package com.example.tr.playplane;
+package com.paperplane;
+
+import com.alibaba.fastjson.*;
+import com.example.tr.playplane.R;
 
 import java.io.Serializable;
 
@@ -12,12 +15,12 @@ public class Message implements Serializable {
     private int type = SEND;
 
     public Message(String json){
-        SimpleJSON resolver = new SimpleJSON(json);
+        JSONObject resolver = JSONObject.parseObject(json);
 
-        icon = Integer.parseInt(resolver.getValue("icon"));
-        content = resolver.getValue("content");
-        image = resolver.getValue("image");
-        type = resolver.getValue("type")=="SEND" ? 0 : 1;
+        icon = Integer.parseInt(resolver.getString("icon"));
+        content = resolver.getString("content");
+        image = resolver.getString("image");
+        type = resolver.getString("type")=="SEND" ? 0 : 1;
     }
 
     public Message(int icon, String content, String image, int type){
