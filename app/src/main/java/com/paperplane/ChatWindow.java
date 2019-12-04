@@ -33,7 +33,7 @@ public class ChatWindow extends AppCompatActivity {
 
 
         //初始化recyclerView
-        recyclerView = (RecyclerView) findViewById(R.id.recyler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.message_list_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ChatAdapter(privateChat.GetMessages());

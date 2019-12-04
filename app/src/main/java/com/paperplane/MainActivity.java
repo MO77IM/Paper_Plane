@@ -41,18 +41,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final PrivateChat privateChat = new PrivateChat();
-        privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "你好", "", Message.RECEIVE));
-        privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "你好你好", "", Message.SEND));
-        privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "drtnb", "", Message.RECEIVE));
-        privateChat.AddMessage(new Message(R.mipmap.ic_launcher, "确实", "", Message.SEND));
-
         Button button = (Button)findViewById(R.id.test_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, ChatWindow.class);
-                intent.putExtra("privateChat", privateChat);
                 startActivity(intent);
             }
         });
@@ -60,5 +53,10 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
     }
 }
