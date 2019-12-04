@@ -7,7 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 
@@ -91,12 +91,12 @@ public class ChatClientManager {
 
         JSONObject json = new JSONObject();
         try {
-            json.put("MSGType", "SEND_TO");
+            json.put("MSGType", "ping");
             json.put("content",msg);
         }catch (Exception e){
             e.printStackTrace();
         }
         if(networkBinder != null)
-            networkBinder.SendMessage(json.toString());
+            networkBinder.SendMessage(json.toJSONString());
     }
 }

@@ -32,7 +32,7 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params){
         while(true) {
-            //Log.d("NetworkTask", "Looping");
+            Log.d("NetworkTask", "Looping");
 
             if(isStop){
                 break;
@@ -42,20 +42,21 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
                 Log.d("NetworkTask","Send msg");
                 client = new SimpleClient();
                 client.send(sendMSG);
-                client.get();
+                String res = client.get();
+                Log.d("NetworkTask", "message:" + res);
                 isSend = false;
             }
 
             //接收代码
             try {
-                Thread.sleep(5000);
+                Thread.sleep(500);
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
             client = new SimpleClient();
             try {
                 JSONObject json = new JSONObject();
-                json.put("MSGType", "RECEIVE_FOR");
+                json.put("MSGType", "NO_MEANING");
                 json.put("UserID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
                client.send(json.toJSONString());
                 String msg = client.get();

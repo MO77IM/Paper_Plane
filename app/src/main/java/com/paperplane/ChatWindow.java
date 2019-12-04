@@ -75,7 +75,11 @@ public class ChatWindow extends AppCompatActivity {
                 input.setText("");
             }
         });
+    }
 
-
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        unbindService(connection);
     }
 }
