@@ -1,12 +1,11 @@
 //powered by SCUDRT
-package com.drttest;
 import java.util.*;
 import java.net.*;
 import java.io.*;
 import com.alibaba.fastjson.*;
 
 public class SimpleClient{
-    static final String SERVER_IP = "47.103.198.96"; // "47.103.198.96";
+    static final String SERVER_IP = "127.0.0.1"; // "47.103.198.96";
     static final int SERVER_PORT = 3000; // 3000
 
     public SimpleClient(){

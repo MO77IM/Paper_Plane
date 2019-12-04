@@ -1,5 +1,3 @@
-package com.drttest;
-
 import java.util.*;
 import com.alibaba.fastjson.*;
 
@@ -15,7 +13,7 @@ public class ChatMessage{
         this.sendTime = json.getString("sendTime");
         this.senderID = json.getString("senderID");
         this.receiverID = json.getString("receiverID");
-        
+        this.message = json.getString("message");
     }
     
     /**

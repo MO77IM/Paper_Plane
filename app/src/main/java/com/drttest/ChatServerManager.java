@@ -1,5 +1,3 @@
-package com.drttest;
-
 import com.alibaba.fastjson.*;
 import java.util.*;
 
@@ -16,7 +14,7 @@ public class ChatServerManager{
      * PUBLIC
      */
 
-     public ChatServerManager getInstance(){
+     public static ChatServerManager getInstance(){
          return instance;
      }
 
@@ -25,10 +23,11 @@ public class ChatServerManager{
       * save offline chatting messages for users
       */
      public String addOfflineChatMessage(JSONObject chatJSON){
+         chatJSON = chatJSON.getJSONObject("message"); //get message json in json message
          String receiverID = chatJSON.getString("receiverID");
          String senderID = chatJSON.getString("senderID");
          JSONObject res = new JSONObject();
-         res.put("result", false)
+         res.put("result", false);
 
          //check if sender and receiver exists
          UserAccountServerManager instance = UserAccountServerManager.getInstance();
@@ -52,6 +51,7 @@ public class ChatServerManager{
       * return user's offline chatting message
       */
     public String getOfflineChatMessage(JSONObject json){
+        //TODO: check if  the user is online
         String id = json.getString("userID");
         JSONObject res = new JSONObject();
         res.put("size", 0);

@@ -1,4 +1,3 @@
-package com.drttest;
 import com.alibaba.fastjson.*;
 import java.util.*;
 import java.io.*;

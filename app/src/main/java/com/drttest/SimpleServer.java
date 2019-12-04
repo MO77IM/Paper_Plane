@@ -1,10 +1,8 @@
 //powered by SCUDRT
-package com.drttest;
 import java.util.*;
 import java.net.*;
 import java.io.*;
 import com.alibaba.fastjson.*;
-import com.drttest.ChatServerManager;
 
 /**
     usage:
@@ -59,6 +57,7 @@ public class SimpleServer implements Runnable{
                     JSONObject loader = JSONObject.parseObject(input.readUTF());
                     String type = loader.getString("MSGType");
                     if (type != null){
+                        System.out.println("request: " + type);
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
                             res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
