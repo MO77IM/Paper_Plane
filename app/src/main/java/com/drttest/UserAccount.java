@@ -1,8 +1,8 @@
 //powered by SCUDRT
-package com.drttest;
 import com.alibaba.fastjson.*;
 import java.util.*;
 
+//TODO: convert this class to JSONObject
 public class UserAccount{
     public UserAccount(String _id, String _pwd){
         this.signupTime = new Date().toString();
@@ -15,6 +15,7 @@ public class UserAccount{
         this.birthday = userJSON.getString("birthday");
         this.userID = userJSON.getString("userID");
         this.nickname = userJSON.getString("nickname");
+        this.password = userJSON.getString("password");
     }
     
     /** PUBLIC */
@@ -34,7 +35,10 @@ public class UserAccount{
         return this.signupTime;
     }
     public boolean isOnline(){
-        return this.isOnline;
+        return this.onlineIP != null && this.onlineIP != "";
+    }
+    public String getOnlineIP(){
+        return this.onlineIP;
     }
 
     public void setUserID(String _userID){
@@ -49,9 +53,11 @@ public class UserAccount{
     public void setBirthday(String _birthday){
         this.birthday = _birthday;
     }
-    public void setSignupTime(String _signupTime){this.signupTime = _signupTime;}
-    public void setOnline(boolean _isOnline){
-        this.isOnline = _isOnline;
+    public void setSignupTime(String _signupTime){
+        this.signupTime = _signupTime;
+    }
+    public void setOnlineIP(String _onlineIP){
+        this.onlineIP = _onlineIP;
     }
 
     /** PRIVATE */
@@ -63,5 +69,6 @@ public class UserAccount{
 
     private String signupTime = new Date().toString();
 
-    private boolean isOnline = false;
+    //format: "{"address": "xxx", "port": xx}"
+    private String onlineIP;
 }
