@@ -1,7 +1,7 @@
 package com.drttest;
 
 import java.util.*;
-import jdk.nashorn.internal.objects.annotations.Getter;
+import com.alibaba.fastjson.*;
 
 public class ChatMessage{
     public ChatMessage(){
@@ -10,6 +10,12 @@ public class ChatMessage{
     public ChatMessage(String message){
         this.sendTime = new Date().toString();
         this.message = message;
+    }
+    public ChatMessage(JSONObject json){
+        this.sendTime = json.getString("sendTime");
+        this.senderID = json.getString("senderID");
+        this.receiverID = json.getString("receiverID");
+        
     }
     
     /**
@@ -24,6 +30,9 @@ public class ChatMessage{
     }
     public void setReceiverID(String receiverID){
         this.receiverID = receiverID;
+    }
+    public void setSendTime(String sendTime){
+        this.sendTime = sendTime;
     }
 
     public String getMessage(){
