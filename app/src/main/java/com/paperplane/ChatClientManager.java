@@ -1,5 +1,12 @@
 package com.paperplane;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -79,6 +86,8 @@ public class ChatClientManager {
 
     public void sendTextMessageInChat(PrivateChat privateChat, String msg){
         privateChat.SendTextMessage(msg);
+
+        Log.d("ChatManager", (new Boolean(networkBinder == null)).toString());
 
         JSONObject json = new JSONObject();
         try {

@@ -31,7 +31,7 @@ public class ChatServerManager{
          res.put("result", false)
 
          //check if sender and receiver exists
-         UserAccountClientManager instance = UserAccountServerManager.getInstance();
+         UserAccountServerManager instance = UserAccountServerManager.getInstance();
          if (instance.getUserByID(receiverID) != null){ //exists
              if (instance.getUserByID(senderID) != null){
                  //save message for the receiver
