@@ -63,6 +63,8 @@ public class ChatWindow extends AppCompatActivity {
         Intent sIntent = new Intent(this, NetworkService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
+        Log.d("ChatWindow", (new Boolean(networkBinder == null)).toString());
+
         chatManager.setNetworkBinder(networkBinder);
 
         input = (EditText)findViewById(R.id.text_input);

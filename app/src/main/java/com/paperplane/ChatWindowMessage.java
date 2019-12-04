@@ -5,7 +5,7 @@ import com.paperplane.R;
 
 import java.io.Serializable;
 
-public class ChatMessage {
+public class ChatWindowMessage {
     public static final int SEND = 0;
     public static final int RECEIVE = 1;
 
@@ -15,7 +15,7 @@ public class ChatMessage {
     private int type = SEND;
 
 
-    public ChatMessage(String json){
+    public ChatWindowMessage(String json){
         JSONObject resolver = JSONObject.parseObject(json);
 
         icon = Integer.parseInt(resolver.getString("icon"));
@@ -24,7 +24,7 @@ public class ChatMessage {
         type = resolver.getString("type")=="SEND" ? 0 : 1;
     }
 
-    public ChatMessage(int icon, String content, String image, int type){
+    public ChatWindowMessage(int icon, String content, String image, int type){
         this.icon = icon;
         this.content = content;
         this.image = image;

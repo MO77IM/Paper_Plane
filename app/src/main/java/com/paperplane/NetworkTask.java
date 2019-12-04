@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
-import com.drttest.SimpleClient;
 
 public class NetworkTask extends AsyncTask<Void, String, Boolean> {
 

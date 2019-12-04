@@ -1,26 +1,24 @@
 package com.paperplane;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PrivateChat {
     private boolean isGetMessage;
 
     private UserAccount targetUser;
 
-    private ArrayList<ChatMessage> messages;
+    private ArrayList<ChatWindowMessage> messages;
 
     public PrivateChat(){
         isGetMessage = false;
-        messages = new ArrayList<ChatMessage>();
-        targetUser = new UserAccount();
+        messages = new ArrayList<ChatWindowMessage>();
+        targetUser = new UserAccount("123", "456");
     }
 
     public PrivateChat(UserAccount targetUser){
         this.targetUser = targetUser;
         isGetMessage = false;
-        messages = new ArrayList<ChatMessage>();
+        messages = new ArrayList<ChatWindowMessage>();
         targetUser = targetUser;
     }
 
@@ -32,21 +30,21 @@ public class PrivateChat {
         return targetUser;
     }
 
-    public ArrayList<ChatMessage> getMessages() {
+    public ArrayList<ChatWindowMessage> getMessages() {
         return messages;
     }
 
-    public void AddMessage(ChatMessage message){
+    public void AddMessage(ChatWindowMessage message){
         messages.add(message);
     }
 
     public void SendTextMessage(String content){
-        ChatMessage msg = new ChatMessage(targetUser.getIcon(), content, "", ChatMessage.SEND);
+        ChatWindowMessage msg = new ChatWindowMessage(targetUser.getIcon(), content, "", ChatWindowMessage.SEND);
         this.AddMessage(msg);
     }
 
     public void ReceiveTextMessage(String content){
-        ChatMessage msg = new ChatMessage(R.mipmap.ic_launcher, content, "", ChatMessage.RECEIVE); //之后改为本地用户的头像
+        ChatWindowMessage msg = new ChatWindowMessage(R.mipmap.ic_launcher, content, "", ChatWindowMessage.RECEIVE); //之后改为本地用户的头像
         this.AddMessage(msg);
     }
 

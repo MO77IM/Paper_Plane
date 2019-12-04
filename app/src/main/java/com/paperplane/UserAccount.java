@@ -1,23 +1,24 @@
 package com.paperplane;//powered by SCUDRT
 
-import java.io.Serializable;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.Date;
 
+//TODO: convert this class to JSONObject
 public class UserAccount{
-    public UserAccount(){
-        this.signupTime = new Date();
+    public UserAccount(String _id, String _pwd){
+        this.signupTime = new Date().toString();
         this.birthday = this.signupTime;
-        this.isOnline = false;
-        this.nickName = "";
+        this.userID = _id;
+        this.password = _pwd;
         this.icon = R.mipmap.ic_launcher;
     }
-    public UserAccount(String _id, String _pwd){
-        this.signupTime = new Date();
-        this.birthday = this.signupTime;
-        this.isOnline = false;
-        this.nickName = "";
-        this.setUserID(_id);
-        this.setPassword(_pwd);
+    public UserAccount(JSONObject userJSON){
+        this.signupTime = userJSON.getString("signupTime");
+        this.birthday = userJSON.getString("birthday");
+        this.userID = userJSON.getString("userID");
+        this.nickname = userJSON.getString("nickname");
+        this.password = userJSON.getString("password");
         this.icon = R.mipmap.ic_launcher;
     }
     
@@ -29,18 +30,24 @@ public class UserAccount{
         return this.password;
     }
     public String getNickname(){
-        return this.nickName;
+        return this.nickname;
     }
-    public Date getBirthday(){
+    public String getBirthday(){
         return this.birthday;
     }
-    public Date getSignupTime(){
+    public String getSignupTime(){
         return this.signupTime;
     }
     public boolean isOnline(){
-        return this.isOnline;
+        return this.onlineIP != null && this.onlineIP != "";
     }
-    public int getIcon() { return icon; }
+    public String getOnlineIP(){
+        return this.onlineIP;
+    }
+
+    public int getIcon() {
+        return icon;
+    }
 
     public void setUserID(String _userID){
         this.userID = _userID;
@@ -49,28 +56,33 @@ public class UserAccount{
         this.password = _password;
     }
     public void setNickname(String _nickname){
-        this.nickName = _nickname;
+        this.nickname = _nickname;
     }
-    public void setBirthday(Date _birthday){
+    public void setBirthday(String _birthday){
         this.birthday = _birthday;
     }
-    public void setOnline(boolean _isOnline){
-        this.isOnline = _isOnline;
+    public void setSignupTime(String _signupTime){
+        this.signupTime = _signupTime;
     }
-    public void setIcon(int icon) { this.icon = icon; }
+    public void setOnlineIP(String _onlineIP){
+        this.onlineIP = _onlineIP;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
 
     /** PRIVATE */
-
-    //暂时使用Resource里面提供的默认图像，icon为整数代表资源的ID
-    private int icon;
-
     private String userID, password;
 
-    private String nickName;
+    private String nickname;
 
-    private Date birthday;
+    private String birthday;
 
-    private Date signupTime;
+    private String signupTime = new Date().toString();
 
-    private boolean isOnline;
+    //format: "{"address": "xxx", "port": xx}"
+    private String onlineIP;
+
+    private int icon;
 }

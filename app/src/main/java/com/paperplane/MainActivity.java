@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.paperplane.R;
-
 public class MainActivity extends AppCompatActivity {
 
     // 测试用的活动
@@ -47,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
 
-        UserAccount drt = new UserAccount();
+        UserAccount drt = new UserAccount("134", "456");
         drt.setNickname("drt");
-        UserAccount mza = new UserAccount();
+        UserAccount mza = new UserAccount("78979","drtnb");
         mza.setNickname("mza");
 
         ChatManager chatManager = ChatManager.getInstance();
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         PrivateChat drtChat = chatManager.getChatByUser(drt);
         if(drtChat != null){
-            drtChat.AddMessage(new ChatMessage(drt.getIcon(), "你好", "", ChatMessage.RECEIVE));
+            drtChat.AddMessage(new ChatWindowMessage(drt.getIcon(), "你好", "", ChatWindowMessage.RECEIVE));
         }
 
         Button button = (Button)findViewById(R.id.test_button);
