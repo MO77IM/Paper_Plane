@@ -1,5 +1,4 @@
 //powered by SCUDRT
-package com.drttest;
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -8,12 +7,18 @@ import com.alibaba.fastjson.*;
 public class SimpleClient{
     static final String SERVER_IP = "47.103.198.96"; // "47.103.198.96";
     static final int SERVER_PORT = 3000; // 3000
+
     public SimpleClient(){
         this.connect(SERVER_IP, SERVER_PORT);
     }
+    //not provided
     public SimpleClient(String _serverIP, int _port){
         this.connect(_serverIP, _port);
     }
+
+    /**
+     * PUBLIC
+     */
 
     public boolean connect(String _serverIP, int _port){
         // return false if connection failed
