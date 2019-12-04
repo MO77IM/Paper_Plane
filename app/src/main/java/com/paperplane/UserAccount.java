@@ -9,6 +9,7 @@ public class UserAccount implements Serializable {
         this.birthday = this.signupTime;
         this.isOnline = false;
         this.nickName = "";
+        this.icon = R.mipmap.ic_launcher;
     }
     public UserAccount(String _id, String _pwd){
         this.signupTime = new Date();
@@ -17,6 +18,7 @@ public class UserAccount implements Serializable {
         this.nickName = "";
         this.setUserID(_id);
         this.setPassword(_pwd);
+        this.icon = R.mipmap.ic_launcher;
     }
     
     /** PUBLIC */
@@ -38,6 +40,7 @@ public class UserAccount implements Serializable {
     public boolean isOnline(){
         return this.isOnline;
     }
+    public int getIcon() { return icon; }
 
     public void setUserID(String _userID){
         this.userID = _userID;
@@ -54,8 +57,13 @@ public class UserAccount implements Serializable {
     public void setOnline(boolean _isOnline){
         this.isOnline = _isOnline;
     }
+    public void setIcon(int icon) { this.icon = icon; }
 
     /** PRIVATE */
+
+    //暂时使用Resource里面提供的默认图像，icon为整数代表资源的ID
+    private int icon;
+
     private String userID, password;
 
     private String nickName;

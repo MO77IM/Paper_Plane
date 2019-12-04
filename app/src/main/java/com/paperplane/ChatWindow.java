@@ -36,7 +36,7 @@ public class ChatWindow extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.message_list_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ChatAdapter(privateChat.GetMessages());
+        adapter = new ChatAdapter(privateChat.getMessages());
         recyclerView.setAdapter(adapter);
 
 
@@ -45,11 +45,11 @@ public class ChatWindow extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Message message = new Message(R.mipmap.ic_launcher, input.getText().toString(), "", Message.SEND);
+                Message message = new Message(privateChat.getTargetUser().getIcon(), input.getText().toString(), "", Message.SEND);
                 privateChat.SendMessage(message);
                 Log.d("Chat Window", "onClick: send button clicked");
-                adapter.notifyItemInserted(privateChat.GetMessages().size() - 1);
-                recyclerView.scrollToPosition(privateChat.GetMessages().size() - 1);
+                adapter.notifyItemInserted(privateChat.getMessages().size() - 1);
+                recyclerView.scrollToPosition(privateChat.getMessages().size() - 1);
                 input.setText("");
             }
         });

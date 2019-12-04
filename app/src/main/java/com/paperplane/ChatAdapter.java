@@ -19,6 +19,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         this.dataList = dataList;
     }
 
+    public void setDataList(ArrayList<Message> dataList) {
+        this.dataList = dataList;
+    }
 
     public void replaceAll(ArrayList<Message> list){
         dataList.clear();

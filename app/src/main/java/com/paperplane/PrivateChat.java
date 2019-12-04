@@ -21,18 +21,18 @@ public class PrivateChat implements Serializable {
         this.targetUser = targetUser;
         isGetMessage = false;
         messages = new ArrayList<Message>();
-        targetUser = new UserAccount();
+        targetUser = targetUser;
     }
 
-    public boolean IsGetMessage() {
+    public boolean isGetMessage() {
         return isGetMessage;
     }
 
-    public UserAccount GetTargetUser() {
+    public UserAccount getTargetUser() {
         return targetUser;
     }
 
-    public ArrayList<Message> GetMessages() {
+    public ArrayList<Message> getMessages() {
         return messages;
     }
 
