@@ -14,6 +14,8 @@ import com.paperplane.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    // 测试用的活动
+
     private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -41,11 +43,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        UserAccount drt = new UserAccount();
+        drt.setNickname("drt");
+        UserAccount mza = new UserAccount();
+        mza.setNickname("mza");
+
+        ChatManager chatManager = ChatManager.getInstance();
+        chatManager.startChat(drt);
+        chatManager.startChat(mza);
+
+        PrivateChat drtChat = chatManager.getChatByUser(drt);
+        if(drtChat != null){
+            drtChat.AddMessage(new Message(drt.getIcon(), "你好", "", Message.RECEIVE));
+        }
+
         Button button = (Button)findViewById(R.id.test_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, ChatWindow.class);
+                Intent intent = new Intent(MainActivity.this, ChatListWindow.class);
                 startActivity(intent);
             }
         });

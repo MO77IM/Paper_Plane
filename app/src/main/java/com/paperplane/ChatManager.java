@@ -26,4 +26,28 @@ public class ChatManager {
     public void delChat(PrivateChat privateChat){
         chatList.remove(privateChat);
     }
+
+    public ArrayList<PrivateChat> getChatList() {
+        return chatList;
+    }
+
+    public PrivateChat getChatByUser(UserAccount user){
+        for(PrivateChat chat: chatList){
+            if(chat.getTargetUser() == user){
+                return chat;
+            }
+        }
+        return null;
+    }
+
+    public int getChatSize(){
+        return chatList.size();
+    }
+
+    public PrivateChat getChatByPosition(int position){
+        if(position >= getChatSize() || position < 0){
+            return null;
+        }
+        return chatList.get(position);
+    }
 }

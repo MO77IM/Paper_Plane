@@ -43,4 +43,8 @@ public class PrivateChat implements Serializable {
     public void SendMessage(Message message){
         AddMessage(message);
     }
+
+    public int getMessageSize(){
+        return messages.size();
+    }
 }
