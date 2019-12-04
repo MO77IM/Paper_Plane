@@ -1,4 +1,7 @@
 //powered by SCUDRT
+package com.drttest;
+import com.drttest.FriendList;
+
 import java.util.*;
 
 public class FriendListManager{

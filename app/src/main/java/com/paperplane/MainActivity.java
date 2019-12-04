@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //启动网络服务
+        Intent intent = new Intent(this, NetworkService.class);
+        startService(intent);
+
         UserAccount drt = new UserAccount();
         drt.setNickname("drt");
         UserAccount mza = new UserAccount();
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         PrivateChat drtChat = chatManager.getChatByUser(drt);
         if(drtChat != null){
-            drtChat.AddMessage(new Message(drt.getIcon(), "你好", "", Message.RECEIVE));
+            drtChat.AddMessage(new ChatMessage(drt.getIcon(), "你好", "", ChatMessage.RECEIVE));
         }
 
         Button button = (Button)findViewById(R.id.test_button);

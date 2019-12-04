@@ -3,7 +3,7 @@ package com.paperplane;//powered by SCUDRT
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserAccount implements Serializable {
+public class UserAccount{
     public UserAccount(){
         this.signupTime = new Date();
         this.birthday = this.signupTime;

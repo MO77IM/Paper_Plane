@@ -1,14 +1,26 @@
 package com.paperplane;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class ChatManager {
     private ArrayList<PrivateChat> chatList;
+    private PrivateChat currentChat;
+
+    private NetworkService.NetworkBinder networkBinder;
 
     static private ChatManager instance;
 
     private ChatManager(){
         chatList = new ArrayList<PrivateChat>();
+        currentChat = null;
     }
 
     static public ChatManager getInstance(){
@@ -16,6 +28,14 @@ public class ChatManager {
             instance = new ChatManager();
         }
         return instance;
+    }
+
+    public void setCurrentChat(PrivateChat currentChat) {
+        this.currentChat = currentChat;
+    }
+
+    public PrivateChat getCurrentChat() {
+        return currentChat;
     }
 
     public void startChat(UserAccount targetUser){
@@ -31,11 +51,23 @@ public class ChatManager {
         return chatList;
     }
 
+    public void setNetworkBinder(NetworkService.NetworkBinder networkBinder) {
+        this.networkBinder = networkBinder;
+    }
+
     public PrivateChat getChatByUser(UserAccount user){
         for(PrivateChat chat: chatList){
             if(chat.getTargetUser() == user){
                 return chat;
             }
+        }
+        return null;
+    }
+
+    public PrivateChat getChatByUserId(String id){
+        for(PrivateChat chat: chatList){
+            if(chat.getTargetUser().getUserID().equals(id));
+                return chat;
         }
         return null;
     }
@@ -49,5 +81,19 @@ public class ChatManager {
             return null;
         }
         return chatList.get(position);
+    }
+
+    public void sendTextMessageInChat(PrivateChat privateChat, String msg){
+        privateChat.SendTextMessage(msg);
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("MSGType", "SEND_TO");
+            json.put("content",msg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if(networkBinder != null)
+            networkBinder.SendMessage(json.toString());
     }
 }
