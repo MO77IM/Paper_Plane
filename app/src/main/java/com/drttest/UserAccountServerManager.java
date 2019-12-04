@@ -25,42 +25,50 @@ public class UserAccountServerManager {
         return instance;
     }
 
-    public String signup(JSONObject signupJSON){
+    /**
+     * @Description
+     * Sign up for the new user, return sign up result true if succeed
+     */
+    public String signup(String signupStr){
+        //TODO: save the sign up record in the server
         JSONObject res = new JSONObject();
+        JSONObject json = JSONObject.parseObject(signupStr);
 
-        String id = signupJSON.getString("userID");
+        String id = json.getString("userID");
         if (id != null) {
             if (this.getUserByID(id) == null) { //user not exists
                 //TODO: check if the password is legal enough
-                String pwd = signupJSON.getString("password");
+                String pwd = json.getString("password");
                 if (pwd != null && pwd.length() >= 6) { //ok
                     UserAccount newUser = new UserAccount(id, pwd);
-                    res.put("result", true);
+                    //TODO: save new user in the file
+                    res.put("signup result", true);
                 }
             }
         }
         return res.toJSONString();
     }
-    public String signup(String signupStr){
-        return this.signup(JSONObject.parseObject(signupStr));
-    }
 
-    //TODO: complete login() function in server version
-    public String login(JSONObject loginJSON){
-        String id = loginJSON.getString("userID");
-        String password = loginJSON.getString("password");
-        UserAccount user = this.getUserByID(id);
-        if (user == null){ //user not exists
-            return false;
-        }else if (!user.getPassword().equals(password)){ //wrong password
-            return false;
-        }else{
-            user.setOnline(true);
-            return true;
-        }
-    }
+    /**
+     * @Description
+     * return login result true if succeed
+     */
     public String login(String loginMSG){
-        return this.login(JSON.parseObject(loginMSG));
+        //TODO: save the login record in the server
+        JSONObject res = new JSONObject(); //response
+        JSONObject json = JSONObject.parseObject(loginMSG); //resolve the request string
+        String id = json.getString("userID");
+
+        if (id != null){ //legal request
+            UserAccount user = this.getUserByID(id);
+            if (user != null){ //user exists
+                if (user.getPassword().equals(json.getString("password"))){
+                    user.setOnline(true);
+                    res.put("login result", true);
+                }
+            }
+        }
+        return res.toJSONString();
     }
 
     public UserAccount getUserByID(String id){
@@ -74,8 +82,14 @@ public class UserAccountServerManager {
     /**
      * load local files contain users' information
      */
-    private void loadUserAccountFiles(){
-        ;
+    private boolean loadUserAccountFiles(){
+        //TODO
+        return true;
+    }
+
+    private boolean saveUser(String userInfo){
+        //TODO
+        return true;
     }
 
     //singleton

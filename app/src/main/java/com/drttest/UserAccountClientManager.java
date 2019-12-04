@@ -25,33 +25,32 @@ public class UserAccountClientManager {
      * post a signup request to the server
      */
     public boolean signup(String signupMSG){
+        JSONObject json = JSONObject.parseObject(signupMSG);
+        json.put("messageType", "signup");
         SimpleClient client = new SimpleClient();
         if (client.isConnected()){
-            client.send(signupMSG);
-            JSONObject res = JSONObject.parseObject(client.get());
-            return res.getBoolean("result") == true;
+            client.send(json.toJSONString());
+            json = JSONObject.parseObject(client.get());
+            return json.getBoolean("result") == true;
         }else{
             return false;
         }
-    }
-    public boolean signup(JSONObject signupJSON){
-        return this.signup(signupJSON.toJSONString());
     }
 
     /**
      * @Description
      * try to post a login request to the server
      */
-    public boolean login(JSONObject loginJSON){
-        return this.login(loginJSON.toJSONString());
-    }
     public boolean login(String loginMSG){
+        JSONObject json = JSONObject.parseObject(loginMSG);
+        json.put("MSGType", "login");
+
         SimpleClient client = new SimpleClient();
         if (client.isConnected()){
-            client.send(loginMSG);
-            JSONObject res = JSONObject.parseObject(client.get());
-            if (res.getString("userID") != null){
-                this.user = new UserAccount(res);
+            client.send(json.toJSONString());
+            json = JSONObject.parseObject(client.get());
+            if (json.getString("userID") != null){
+                this.user = new UserAccount(json);
                 this.user.setOnline(true);
                 return true;
             }else{
