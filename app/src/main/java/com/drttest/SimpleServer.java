@@ -1,5 +1,4 @@
 //powered by SCUDRT
-package com.drttest;
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -38,6 +37,9 @@ public class SimpleServer implements Runnable{
         }
     }
 
+    /**
+     * main function of the server
+     */
     public void run(){
         System.out.println("server is running on " + SERVER_PORT);
         while (true){
@@ -45,7 +47,7 @@ public class SimpleServer implements Runnable{
                 while (true){
                     Socket server = this.serverSocket.accept();
                     //TODO: save the message in the files
-                    System.out.println("\n" + (new Date()).toString() + " :");
+                    System.out.println("\n" + (new Date()).toString() + ":");
                     System.out.println("connected to " + server.getRemoteSocketAddress());
 
                     DataInputStream input = new DataInputStream(server.getInputStream());
@@ -55,11 +57,12 @@ public class SimpleServer implements Runnable{
                     JSONObject loader = JSONObject.parseObject(input.readUTF());
                     String type = loader.getString("MSGType");
                     if (type != null){
+                        System.out.println("request: " + type);
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
-                            ;
+                            res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
                         }else if (type.equals("SEND_TO")){
-                            ; //TODO: distribute chat message to another user
+                            res = ChatServerManager.getInstance().addOfflineChatMessage(loader);
                         }else if (type.equals("SIGN_UP")){
                             res = UserAccountServerManager.getInstance().signup(loader);
                         }else if (type.equals("LOGIN")){

@@ -1,7 +1,6 @@
-package com.drttest;//powered by SCUDRT
+//powered by SCUDRT
 
 import com.alibaba.fastjson.JSONObject;
-import com.paperplane.R;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ public class UserAccount {
         this.birthday = this.signupTime;
         this.userID = _id;
         this.password = _pwd;
-        this.icon = R.mipmap.ic_launcher;
+        //this.icon = R.mipmap.ic_launcher;
     }
     public UserAccount(JSONObject userJSON){
         this.signupTime = userJSON.getString("signupTime");
@@ -20,7 +19,7 @@ public class UserAccount {
         this.userID = userJSON.getString("userID");
         this.nickname = userJSON.getString("nickname");
         this.password = userJSON.getString("password");
-        this.icon = R.mipmap.ic_launcher;
+        //this.icon = R.mipmap.ic_launcher;
     }
     
     /** PUBLIC */

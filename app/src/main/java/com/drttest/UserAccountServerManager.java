@@ -1,4 +1,3 @@
-package com.drttest;
 import com.alibaba.fastjson.*;
 import java.util.*;
 import java.io.*;
@@ -98,7 +97,7 @@ public class UserAccountServerManager {
             }
             //reconstructing user-map
             JSONObject json = JSONObject.parseObject(str);
-            n = json.getInteger("count"); //get users' count
+            n = json.getInteger("size"); //get users' count
             for (int i=0;i<n;++i){
                 str = "user" + i;
                 user = new UserAccount(json.getJSONObject(str));
@@ -119,7 +118,7 @@ public class UserAccountServerManager {
             FileWriter f = new FileWriter("./UserAccounts.xml");
             JSONObject json = new JSONObject();
             int n = this.users.size();
-            json.put("count", n);
+            json.put("size", n);
             Iterator<Map.Entry<String, UserAccount>> entries = this.users.entrySet().iterator();
             for (int i=0;i<n;++i){
                 Map.Entry<String, UserAccount> it = entries.next();
