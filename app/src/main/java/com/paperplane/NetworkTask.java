@@ -11,15 +11,14 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
 
     private boolean isStop = false;
     private boolean isSend = false;
+    private SimpleClient client;
     private String sendMSG="";
 
-    private SimpleClient client;
     private ChatManager chatManager;
 
     public NetworkTask(NetworkListener listener){
         super();
         this.listener = listener;
-        client = new SimpleClient();
         chatManager = ChatManager.getInstance();
     }
 
@@ -31,7 +30,7 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params){
         while(true) {
-            Log.d("NetworkTask", "Looping");
+            //Log.d("NetworkTask", "Looping");
 
             if(isStop){
                 break;
@@ -39,20 +38,31 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
             if(isSend){
                 //发送代码
                 Log.d("NetworkTask","Send msg");
+                client = new SimpleClient();
                 client.send(sendMSG);
+                client.get();
                 isSend = false;
             }
 
             //接收代码
             try {
-                Thread.sleep(500);
+                Thread.sleep(5000);
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
-            String msg = client.get();
+            client = new SimpleClient();
+            try {
+                JSONObject json = new JSONObject();
+                json.put("MSGType", "RECEIVE_FOR");
+                json.put("UserID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
+               client.send(json.toJSONString());
+                String msg = client.get();
             if(msg != null){
                     publishProgress(msg);
                 }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return true;
     }

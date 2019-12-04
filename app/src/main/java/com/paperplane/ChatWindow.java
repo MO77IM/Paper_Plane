@@ -27,7 +27,7 @@ public class ChatWindow extends AppCompatActivity {
     RecyclerView recyclerView;
     ChatAdapter adapter;
     LinearLayoutManager layoutManager;
-    ChatManager chatManager;
+    ChatManager chatManager = ChatManager.getInstance();
 
     private NetworkService.NetworkBinder networkBinder;
 
@@ -35,6 +35,9 @@ public class ChatWindow extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             networkBinder = (NetworkService.NetworkBinder) iBinder;
+            chatManager.setNetworkBinder(networkBinder);
+            Log.d("ChatWindow","connection create binder");
+            Log.d("ChatWindow", (new Boolean(networkBinder == null)).toString());
         }
 
         @Override
@@ -47,7 +50,7 @@ public class ChatWindow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
 
-        chatManager = ChatManager.getInstance();
+        //chatManager = ChatManager.getInstance();
 
         final Intent intent = getIntent();
         privateChat = chatManager.getChatByPosition(intent.getIntExtra("privateChat", -1));
@@ -61,9 +64,8 @@ public class ChatWindow extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         Intent sIntent = new Intent(this, NetworkService.class);
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        bindService(sIntent, connection, BIND_AUTO_CREATE);
 
-        Log.d("ChatWindow", (new Boolean(networkBinder == null)).toString());
 
         chatManager.setNetworkBinder(networkBinder);
 

@@ -13,6 +13,8 @@ public class NetworkService extends Service {
     private NetworkTask networkTask;
     private ChatManager chatManager;
 
+    private NetworkBinder nBinder = new NetworkBinder();
+
     private NetworkListener listener = new NetworkListener() {
         @Override
         public void onReceived(String msg) {
@@ -42,7 +44,7 @@ public class NetworkService extends Service {
     public void onCreate(){
         super.onCreate();
         chatManager = ChatManager.getInstance();
-        NetworkTask networkTask = new NetworkTask(listener);
+        networkTask = new NetworkTask(listener);
         networkTask.execute();
         Log.d("NetworkService", "onCreate");
     }
@@ -64,8 +66,6 @@ public class NetworkService extends Service {
         // TODO: Return the communication channel to the service.
         return nBinder;
     }
-
-    private NetworkBinder nBinder = new NetworkBinder();
 
     class NetworkBinder extends Binder{
 
