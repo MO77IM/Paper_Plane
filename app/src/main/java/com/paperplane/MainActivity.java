@@ -55,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
         UserAccount mza = new UserAccount("78979","drtnb");
         mza.setNickname("mza");
 
-        ChatManager chatManager = ChatManager.getInstance();
-        chatManager.startChat(drt);
-        chatManager.startChat(mza);
+        ChatClientManager chatClientManager = ChatClientManager.getInstance();
+        chatClientManager.startChat(drt);
+        chatClientManager.startChat(mza);
 
-        PrivateChat drtChat = chatManager.getChatByUser(drt);
+        PrivateChat drtChat = chatClientManager.getChatByUser(drt);
         if(drtChat != null){
             drtChat.AddMessage(new ChatWindowMessage(drt.getIcon(), "你好", "", ChatWindowMessage.RECEIVE));
         }

@@ -14,12 +14,14 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
     private SimpleClient client;
     private String sendMSG="";
 
-    private ChatManager chatManager;
+    private ChatClientManager chatClientManager;
+
 
     public NetworkTask(NetworkListener listener){
         super();
         this.listener = listener;
-        chatManager = ChatManager.getInstance();
+
+        chatClientManager = ChatClientManager.getInstance();
     }
 
     @Override

@@ -11,22 +11,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ChatManager {
+public class ChatClientManager {
     private ArrayList<PrivateChat> chatList;
     private PrivateChat currentChat;
 
     private NetworkService.NetworkBinder networkBinder;
 
-    static private ChatManager instance;
+    static private ChatClientManager instance;
 
-    private ChatManager(){
+    private ChatClientManager(){
         chatList = new ArrayList<PrivateChat>();
         currentChat = null;
     }
 
-    static public ChatManager getInstance(){
+    static public ChatClientManager getInstance(){
         if(instance == null){
-            instance = new ChatManager();
+            instance = new ChatClientManager();
         }
         return instance;
     }
