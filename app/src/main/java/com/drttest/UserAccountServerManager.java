@@ -118,12 +118,15 @@ public class UserAccountServerManager {
             FileWriter f = new FileWriter("./UserAccounts.xml");
             JSONObject json = new JSONObject();
             int n = this.users.size();
+            json.put("count", n);
             Iterator<Map.Entry<String, UserAccount>> entries = this.users.entrySet().iterator();
             for (int i=0;i<n;++i){
                 Map.Entry<String, UserAccount> it = entries.next();
                 json.put("user" + i, it.getValue());
             }
             f.write(json.toJSONString());
+            f.flush();
+            f.close();
             System.out.println("saved " + n + " users");
             return true;
         }catch(IOException e){

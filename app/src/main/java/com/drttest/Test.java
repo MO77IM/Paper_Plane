@@ -7,7 +7,6 @@ public class Test{
         JSONObject json = new JSONObject();
         json.put("userID", "scudrt");
         json.put("password", "123456");
-        System.out.println(json.toJSONString());
 
         boolean result = UserAccountClientManager.getInstance().signup(json);
         if (result){

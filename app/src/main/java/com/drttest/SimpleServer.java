@@ -57,7 +57,7 @@ public class SimpleServer implements Runnable{
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
                             ;
-                        }else if (type.equals("SEND_CHAT_MESSAGE")){
+                        }else if (type.equals("SEND_TO")){
                             ; //TODO: distribute chat message to another user
                         }else if (type.equals("SIGN_UP")){
                             res = UserAccountServerManager.getInstance().signup(loader);
