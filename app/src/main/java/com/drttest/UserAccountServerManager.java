@@ -21,7 +21,7 @@ public class UserAccountServerManager {
      * PUBLIC
      */
 
-    public UserAccountServerManager getInstance(){
+    public static UserAccountServerManager getInstance(){
         return instance;
     }
 
@@ -42,7 +42,7 @@ public class UserAccountServerManager {
                 if (pwd != null && pwd.length() >= 6) { //ok
                     UserAccount newUser = new UserAccount(id, pwd);
                     //TODO: save new user in the file
-                    res.put("signup result", true);
+                    res.put("result", true);
                 }
             }
         }
@@ -64,7 +64,11 @@ public class UserAccountServerManager {
             if (user != null){ //user exists
                 if (user.getPassword().equals(json.getString("password"))){
                     user.setOnline(true);
-                    res.put("login result", true);
+                    // return user's message to the client
+                    res.put("userID", id);
+                    res.put("birthday", user.getBirthday());
+                    res.put("nickname", user.getNickname());
+                    res.put("signupTime", user.getSignupTime());
                 }
             }
         }

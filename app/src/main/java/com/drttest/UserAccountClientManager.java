@@ -8,9 +8,7 @@ import com.paperplane.Server;
  * be used in client
  */
 public class UserAccountClientManager {
-    private UserAccountClientManager(){
-        this.isOnline = false;
-    }
+    private UserAccountClientManager(){}
 
     /**
      * PUBLIC
