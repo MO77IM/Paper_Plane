@@ -3,8 +3,6 @@ package com.paperplane;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSONObject;
-
 public class NetworkTask extends AsyncTask<Void, String, Boolean> {
 
     private NetworkListener listener;
@@ -14,13 +12,13 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
     private String sendMSG="";
 
     private SimpleClient client;
-    private ChatManager chatManager;
+    private ChatClientManager chatClientManager;
 
     public NetworkTask(NetworkListener listener){
         super();
         this.listener = listener;
         client = new SimpleClient();
-        chatManager = ChatManager.getInstance();
+        chatClientManager = ChatClientManager.getInstance();
     }
 
     @Override

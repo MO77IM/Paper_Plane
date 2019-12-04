@@ -11,7 +11,7 @@ import com.alibaba.fastjson.JSONObject;
 public class NetworkService extends Service {
 
     private NetworkTask networkTask;
-    private ChatManager chatManager;
+    private ChatClientManager chatClientManager;
 
     private NetworkListener listener = new NetworkListener() {
         @Override
@@ -20,7 +20,7 @@ public class NetworkService extends Service {
             String type = loader.getString("MSGType");
             if(type!=null){
                 if(type.equals("SEND_TO")){//用户间发送消息
-                    PrivateChat privateChat = chatManager.getChatByUserId(loader.getString("UserID"));
+                    PrivateChat privateChat = chatClientManager.getChatByUserId(loader.getString("UserID"));
                     if(privateChat == null){//当前聊天列表未创建与目标用户的聊天，在好友中搜索该用户
                         //代码
                     }
@@ -41,7 +41,7 @@ public class NetworkService extends Service {
     @Override
     public void onCreate(){
         super.onCreate();
-        chatManager = ChatManager.getInstance();
+        chatClientManager = ChatClientManager.getInstance();
         NetworkTask networkTask = new NetworkTask(listener);
         networkTask.execute();
         Log.d("NetworkService", "onCreate");
