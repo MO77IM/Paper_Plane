@@ -22,19 +22,23 @@ public class ChatWindow extends AppCompatActivity {
     EditText input;
     RecyclerView recyclerView;
     ChatAdapter adapter;
+    LinearLayoutManager layoutManager;
+    ChatManager chatManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
 
+        chatManager = ChatManager.getInstance();
+
         final Intent intent = getIntent();
-        privateChat = (PrivateChat)getIntent().getSerializableExtra("privateChat");
+        privateChat = chatManager.getChatByPosition(intent.getIntExtra("privateChat", -1));
 
 
         //初始化recyclerView
         recyclerView = (RecyclerView) findViewById(R.id.message_list_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ChatAdapter(privateChat.getMessages());
         recyclerView.setAdapter(adapter);
