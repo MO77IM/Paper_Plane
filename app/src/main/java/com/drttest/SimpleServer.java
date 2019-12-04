@@ -1,4 +1,5 @@
 //powered by SCUDRT
+package com.drttest;
 import java.util.*;
 import java.net.*;
 import java.io.*;
@@ -43,19 +44,32 @@ public class SimpleServer implements Runnable{
             try{
                 while (true){
                     Socket server = this.serverSocket.accept();
+                    //TODO: save the message in the files
                     System.out.println("\n" + (new Date()).toString() + " :");
                     System.out.println("connected to " + server.getRemoteSocketAddress());
 
                     DataInputStream input = new DataInputStream(server.getInputStream());
                     DataOutputStream output = new DataOutputStream(server.getOutputStream());
+                    String res = "";
                     
                     JSONObject loader = JSONObject.parseObject(input.readUTF());
-                    
-
+                    String type = loader.getString("MSGType");
+                    if (type != null){
+                        // check the message type
+                        if (type.equals("signup")){
+                            res = UserAccountServerManager.getInstance().signup(loader.toJSONString());
+                            output.writeUTF(res);
+                        }else if (type.equals("login")){
+                            res = UserAccountServerManager.getInstance().login(loader.toJSONString());
+                            output.writeUTF(res);
+                        }else if (type.equals("hello")) {
+                            output.writeUTF("Hello from server.");
+                        }
+                    }
                     server.close();
                 }
             }catch (IOException ioe){
-                //ioe.printStackTrace();
+                // ioe.printStackTrace();
             }
         }
     }

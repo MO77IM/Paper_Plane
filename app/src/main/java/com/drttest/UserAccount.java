@@ -4,19 +4,17 @@ import com.alibaba.fastjson.*;
 import java.util.*;
 
 public class UserAccount{
-    public UserAccount(){
-        this.signupTime = new Date();
-        this.birthday = this.signupTime;
-        this.isOnline = false;
-        this.nickName = "";
-    }
     public UserAccount(String _id, String _pwd){
-        this.signupTime = new Date();
+        this.signupTime = new Date().toString();
         this.birthday = this.signupTime;
-        this.isOnline = false;
-        this.nickName = "";
-        this.setUserID(_id);
-        this.setPassword(_pwd);
+        this.userID = _id;
+        this.password = _pwd;
+    }
+    public UserAccount(JSONObject userJSON){
+        this.signupTime = userJSON.getString("signupTime");
+        this.birthday = userJSON.getString("birthday");
+        this.userID = userJSON.getString("userID");
+        this.nickname = userJSON.getString("nickname");
     }
     
     /** PUBLIC */
@@ -27,12 +25,12 @@ public class UserAccount{
         return this.password;
     }
     public String getNickname(){
-        return this.nickName;
+        return this.nickname;
     }
-    public Date getBirthday(){
+    public String getBirthday(){
         return this.birthday;
     }
-    public Date getSignupTime(){
+    public String getSignupTime(){
         return this.signupTime;
     }
     public boolean isOnline(){
@@ -46,11 +44,12 @@ public class UserAccount{
         this.password = _password;
     }
     public void setNickname(String _nickname){
-        this.nickName = _nickname;
+        this.nickname = _nickname;
     }
-    public void setBirthday(Date _birthday){
+    public void setBirthday(String _birthday){
         this.birthday = _birthday;
     }
+    public void setSignupTime(String _signupTime){this.signupTime = _signupTime;}
     public void setOnline(boolean _isOnline){
         this.isOnline = _isOnline;
     }
@@ -58,11 +57,11 @@ public class UserAccount{
     /** PRIVATE */
     private String userID, password;
 
-    private String nickName;
+    private String nickname;
 
-    private Date birthday;
+    private String birthday;
 
-    private Date signupTime;
+    private String signupTime = new Date().toString();
 
-    private boolean isOnline;
+    private boolean isOnline = false;
 }

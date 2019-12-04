@@ -1,6 +1,5 @@
 // powered bu SCUDRT
 package com.drttest;
-import java.util.*;
 import com.alibaba.fastjson.*;
 
 public class Test{
@@ -10,10 +9,10 @@ public class Test{
         json.put("password", "123456");
         System.out.println(json.toJSONString());
 
-        boolean result = UserAccountManager.getInstance().signup(json.toJSONString());
+        boolean result = UserAccountClientManager.getInstance().signup(json.toJSONString());
         if (result){
             System.out.println("signup");
-            result = UserAccountManager.getInstance().login(json.toJSONString());
+            result = UserAccountClientManager.getInstance().login(json.toJSONString());
             if (result){
                 System.out.println("login");
             }
