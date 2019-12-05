@@ -5,7 +5,7 @@ import java.util.*;
  * @Description
  * manage and distribute users' chatting messages for server
  */
-public class ChatServerManager{
+public class ChatServerManager implements Runnable{
     private ChatServerManager(){
         this.messageKeeper = new HashMap<String, ArrayList<ChatMessage>>();
     }
@@ -74,6 +74,15 @@ public class ChatServerManager{
             }
         }
         return res.toJSONString();
+    }
+
+    public boolean hasMessage(String userID){
+        if (usedID != null){
+            ArrayList<ChatMessage> messages = this.messageKeeper.get(userID);
+            return messages != null && messages.size() > 0;
+        }else{
+            return false;
+        }
     }
 
     /**

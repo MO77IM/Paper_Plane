@@ -23,6 +23,7 @@ public class SimpleServer implements Runnable{
         try{
             this.serverSocket = new ServerSocket(_port);
             this.setTimeout(DEFAULT_TIMEOUT);
+            System.out.println("Server listening on port " + _port);
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
@@ -41,26 +42,33 @@ public class SimpleServer implements Runnable{
      * main function of the server
      */
     public void run(){
-        System.out.println("server is running on " + SERVER_PORT);
+        Socket server;
+        DataInputStream input;
+        DataOutputStream output;
+        JSONObject loader;
+        String res, type;
         while (true){
             try{
                 while (true){
-                    Socket server = this.serverSocket.accept();
+                    server = this.serverSocket.accept();
                     //TODO: save the message in the files
                     System.out.println("\n" + (new Date()).toString() + ":");
                     System.out.println("connected to " + server.getRemoteSocketAddress());
 
-                    DataInputStream input = new DataInputStream(server.getInputStream());
-                    DataOutputStream output = new DataOutputStream(server.getOutputStream());
-                    String res = ""; //response string
+                    input = new DataInputStream(server.getInputStream());
+                    output = new DataOutputStream(server.getOutputStream());
+                    res = ""; //response string
                     
-                    JSONObject loader = JSONObject.parseObject(input.readUTF());
-                    String type = loader.getString("MSGType");
+                    loader = JSONObject.parseObject(input.readUTF());
+                    type = loader.getString("MSGType");
                     if (type != null){
                         System.out.println("request: " + type);
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
-                            res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
+                            Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
+                            pushThread.start();
+                            break;
+                            //res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
                         }else if (type.equals("SEND_TO")){
                             res = ChatServerManager.getInstance().addOfflineChatMessage(loader);
                         }else if (type.equals("SIGN_UP")){
