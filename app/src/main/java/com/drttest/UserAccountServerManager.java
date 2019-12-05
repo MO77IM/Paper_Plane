@@ -1,5 +1,8 @@
 import com.alibaba.fastjson.*;
 import java.util.*;
+
+import javax.swing.text.html.parser.Entity;
+
 import java.io.*;
 
 /**
@@ -71,6 +74,30 @@ public class UserAccountServerManager {
                 }
             }
         }
+        return res.toJSONString();
+    }
+
+    public String getOnlineUsers(){
+        JSONObject res = new JSONObject();
+        
+        int size = 0;
+        String userStr;
+        UserAccount user;
+        JSONObject userJSON;
+        Iterator<Map.Entry<String, UserAccount>> it = this.users.entrySet().iterator();
+        while (it.hasNext()){
+            user = it.next().getValue();
+            if (user.isOnline()){
+                userStr = JSON.toJSONString(user);
+                userJSON = JSONObject.parseObject(userStr);
+                //don't send important information
+                userJSON.remove("password");
+                userJSON.remove("onlineIP");
+                res.put("user" + size, userJSON);
+                ++size;
+            }
+        }
+        res.put("size", size);
         return res.toJSONString();
     }
 

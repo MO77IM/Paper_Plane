@@ -51,7 +51,7 @@ public class SimpleServer implements Runnable{
             try{
                 while (true){
                     server = this.serverSocket.accept();
-                    //TODO: save the message in the files
+                    //TODO: save logs in the files
                     System.out.println("\n" + (new Date()).toString() + ":");
                     System.out.println("connected to " + server.getRemoteSocketAddress());
 
@@ -71,6 +71,8 @@ public class SimpleServer implements Runnable{
                             //res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
                         }else if (type.equals("SEND_TO")){
                             res = ChatServerManager.getInstance().addOfflineChatMessage(loader);
+                        }else if (type.equals("GET_ONLINE_USERS")){
+                            res = UserAccountServerManager.getInstance().getOnlineUsers();
                         }else if (type.equals("SIGN_UP")){
                             res = UserAccountServerManager.getInstance().signup(loader);
                         }else if (type.equals("LOGIN")){
