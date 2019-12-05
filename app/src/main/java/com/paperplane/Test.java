@@ -1,29 +1,25 @@
-// powered bu SCUDRT
-package com.paperplane;
+package com.paperplane;// powered bu SCUDRT
 
 import com.alibaba.fastjson.JSONObject;
 
 public class Test{
     public static void main(String[] args){
+        //create an account
         JSONObject json = new JSONObject();
-        json.put("userID", "邓瑞韬啊");
+        json.put("userID", "scudrt");
         json.put("password", "123456");
-        System.out.println(json.toJSONString());
 
-        boolean result = UserAccountManager.getInstance().signup(json.toJSONString());
+        boolean result = UserAccountClientManager.getInstance().signup(json);
         if (result){
-            System.out.println("signup");
-            result = UserAccountManager.getInstance().login(json.toJSONString());
-            if (result){
-                System.out.println("login");
-            }
+            System.out.println("signup succeed");
+        }else{
+            System.out.println("sign up failed");
         }
-        /*
-        SimpleClient client = new SimpleClient();
-        if (client.isConnected()){
-            System.out.println("connect succeed!!");
-            client.send("trnb!!!");
-            System.out.println("server: " + client.get());
-        }*/
+        result = UserAccountClientManager.getInstance().login(json);
+        if (result){
+            System.out.println("login succeed");
+        }else{
+            System.out.println("login failed");
+        }
     }
 }

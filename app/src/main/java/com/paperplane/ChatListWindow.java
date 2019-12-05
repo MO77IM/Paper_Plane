@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 public class ChatListWindow extends AppCompatActivity {
 
-    private ChatManager chatManager;
+    private ChatClientManager chatClientManager;
 
     private RecyclerView recyclerView;
     private ChatWindowAdapter adapter;
@@ -17,12 +17,12 @@ public class ChatListWindow extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
 
-        chatManager = ChatManager.getInstance();
+        chatClientManager = ChatClientManager.getInstance();
 
         recyclerView = (RecyclerView) findViewById(R.id.chat_list_view);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ChatWindowAdapter(this, chatManager.getChatList());
+        adapter = new ChatWindowAdapter(this, chatClientManager.getChatList());
         recyclerView.setAdapter(adapter);
     }
 

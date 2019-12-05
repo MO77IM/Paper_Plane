@@ -1,7 +1,6 @@
-package com.drttest;
-
 import com.alibaba.fastjson.*;
-import java.util.HashMap;
+import java.util.*;
+import java.io.*;
 
 /**
 * @Author scudrt
@@ -29,11 +28,10 @@ public class UserAccountServerManager {
      * @Description
      * Sign up for the new user, return sign up result true if succeed
      */
-    public String signup(String signupStr){
+    public String signup(JSONObject json){
         //TODO: save the sign up record in the server
         JSONObject res = new JSONObject();
-        JSONObject json = JSONObject.parseObject(signupStr);
-
+        res.put("result", false);
         String id = json.getString("userID");
         if (id != null) {
             if (this.getUserByID(id) == null) { //user not exists
@@ -41,7 +39,9 @@ public class UserAccountServerManager {
                 String pwd = json.getString("password");
                 if (pwd != null && pwd.length() >= 6) { //ok
                     UserAccount newUser = new UserAccount(id, pwd);
-                    //TODO: save new user in the file
+                    this.users.put(id, newUser);
+                    //TODO: should only save new user
+                    this.saveUsers();
                     res.put("result", true);
                 }
             }
@@ -53,19 +53,18 @@ public class UserAccountServerManager {
      * @Description
      * return login result true if succeed
      */
-    public String login(String loginMSG){
+    public String login(JSONObject json){
         //TODO: save the login record in the server
         JSONObject res = new JSONObject(); //response
-        JSONObject json = JSONObject.parseObject(loginMSG); //resolve the request string
         String id = json.getString("userID");
 
         if (id != null){ //legal request
             UserAccount user = this.getUserByID(id);
             if (user != null){ //user exists
                 if (user.getPassword().equals(json.getString("password"))){
-                    user.setOnline(true);
+                    user.setOnlineIP(json.getString("onlineIP"));
                     // return user's message to the client
-                    res.put("userID", id);
+                    res.put("userID", user.getUserID());
                     res.put("birthday", user.getBirthday());
                     res.put("nickname", user.getNickname());
                     res.put("signupTime", user.getSignupTime());
@@ -87,13 +86,53 @@ public class UserAccountServerManager {
      * load local files contain users' information
      */
     private boolean loadUserAccountFiles(){
-        //TODO
-        return true;
+        try{
+            //get file content
+            FileReader f = new FileReader("./UserAccounts.xml");
+            UserAccount user;
+            String str = "";
+            int n;
+            while ((n = f.read()) != -1){
+                str += (char)n;
+            }
+            //reconstructing user-map
+            JSONObject json = JSONObject.parseObject(str);
+            n = json.getInteger("size"); //get users' count
+            for (int i=0;i<n;++i){
+                str = "user" + i;
+                user = new UserAccount(json.getJSONObject(str));
+                this.users.put(user.getUserID(), user);
+            }
+            //log
+            System.out.println("file loaded, " + n + " users found.");
+            return true;
+        }catch(IOException e){
+            System.out.println("user file no found");
+            return false;
+        }
     }
 
-    private boolean saveUser(String userInfo){
-        //TODO
-        return true;
+    //save all users into the file
+    private boolean saveUsers(){
+        try{
+            FileWriter f = new FileWriter("./UserAccounts.xml");
+            JSONObject json = new JSONObject();
+            int n = this.users.size();
+            json.put("size", n);
+            Iterator<Map.Entry<String, UserAccount>> entries = this.users.entrySet().iterator();
+            for (int i=0;i<n;++i){
+                Map.Entry<String, UserAccount> it = entries.next();
+                json.put("user" + i, it.getValue());
+            }
+            f.write(json.toJSONString());
+            f.flush();
+            f.close();
+            System.out.println("saved " + n + " users");
+            return true;
+        }catch(IOException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     //singleton

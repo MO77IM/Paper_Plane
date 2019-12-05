@@ -1,20 +1,25 @@
 //powered by SCUDRT
-package com.drttest;
-import com.alibaba.fastjson.*;
-import java.util.*;
 
-public class UserAccount{
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.Date;
+
+//TODO: convert this class to JSONObject
+public class UserAccount {
     public UserAccount(String _id, String _pwd){
         this.signupTime = new Date().toString();
         this.birthday = this.signupTime;
         this.userID = _id;
         this.password = _pwd;
+        //this.icon = R.mipmap.ic_launcher;
     }
     public UserAccount(JSONObject userJSON){
         this.signupTime = userJSON.getString("signupTime");
         this.birthday = userJSON.getString("birthday");
         this.userID = userJSON.getString("userID");
         this.nickname = userJSON.getString("nickname");
+        this.password = userJSON.getString("password");
+        //this.icon = R.mipmap.ic_launcher;
     }
     
     /** PUBLIC */
@@ -34,7 +39,14 @@ public class UserAccount{
         return this.signupTime;
     }
     public boolean isOnline(){
-        return this.isOnline;
+        return this.onlineIP != null && this.onlineIP != "";
+    }
+    public String getOnlineIP(){
+        return this.onlineIP;
+    }
+
+    public int getIcon() {
+        return icon;
     }
 
     public void setUserID(String _userID){
@@ -49,9 +61,15 @@ public class UserAccount{
     public void setBirthday(String _birthday){
         this.birthday = _birthday;
     }
-    public void setSignupTime(String _signupTime){this.signupTime = _signupTime;}
-    public void setOnline(boolean _isOnline){
-        this.isOnline = _isOnline;
+    public void setSignupTime(String _signupTime){
+        this.signupTime = _signupTime;
+    }
+    public void setOnlineIP(String _onlineIP){
+        this.onlineIP = _onlineIP;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
     }
 
     /** PRIVATE */
@@ -63,5 +81,8 @@ public class UserAccount{
 
     private String signupTime = new Date().toString();
 
-    private boolean isOnline = false;
+    //format: "{"address": "xxx", "port": xx}"
+    private String onlineIP;
+
+    private int icon;
 }

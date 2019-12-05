@@ -1,16 +1,18 @@
 package com.paperplane;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.paperplane.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,18 +45,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserAccount drt = new UserAccount();
+        //启动网络服务
+        Intent intent = new Intent(this, NetworkService.class);
+        startService(intent);
+
+
+        UserAccount drt = new UserAccount("134", "456");
         drt.setNickname("drt");
-        UserAccount mza = new UserAccount();
+        UserAccount mza = new UserAccount("78979","drtnb");
         mza.setNickname("mza");
 
-        ChatManager chatManager = ChatManager.getInstance();
-        chatManager.startChat(drt);
-        chatManager.startChat(mza);
+        ChatClientManager chatClientManager = ChatClientManager.getInstance();
+        chatClientManager.startChat(drt);
+        chatClientManager.startChat(mza);
 
-        PrivateChat drtChat = chatManager.getChatByUser(drt);
+        PrivateChat drtChat = chatClientManager.getChatByUser(drt);
         if(drtChat != null){
-            drtChat.AddMessage(new Message(drt.getIcon(), "你好", "", Message.RECEIVE));
+            drtChat.AddMessage(new ChatWindowMessage(drt.getIcon(), "你好", "", ChatWindowMessage.RECEIVE));
         }
 
         Button button = (Button)findViewById(R.id.test_button);

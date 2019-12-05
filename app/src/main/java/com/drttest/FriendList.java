@@ -1,4 +1,5 @@
 //powered by SCUDRT
+package com.drttest;
 import java.util.*;
 
 // Works in client environment

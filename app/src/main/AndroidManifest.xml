@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.paperplane">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".NetworkService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity android:name=".ChatListWindow">
             <intent-filter>
-                <action android:name="com.paperplane.START_CHAT_WINDOW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.paperplane.START_CHAT_WINDOW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
@@ -26,11 +35,13 @@
         </activity>
         <activity
             android:name=".ChatWindow"
+
             android:label="Chat"></activity>
         <activity android:name=".MainActivity">
 
         </activity>
         <activity android:name=".RegistActivity"/>
+
     </application>
 
 </manifest>

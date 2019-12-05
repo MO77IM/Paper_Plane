@@ -1,6 +1,5 @@
-package com.drttest;
+
 import com.alibaba.fastjson.*;
-import com.paperplane.Server;
 
 /**
  * @Author scudrt
@@ -22,26 +21,25 @@ public class UserAccountClientManager {
      * @Description
      * post a signup request to the server
      */
-    public boolean signup(String signupMSG){
-        JSONObject json = JSONObject.parseObject(signupMSG);
-        json.put("messageType", "signup");
+    public boolean signup(JSONObject json){
+        json.put("MSGType", "SIGN_UP");
         SimpleClient client = new SimpleClient();
         if (client.isConnected()){
             client.send(json.toJSONString());
             json = JSONObject.parseObject(client.get());
+            client.close();
             return json.getBoolean("result") == true;
-        }else{
-            return false;
         }
+        client.close();
+        return false;
     }
 
     /**
      * @Description
      * try to post a login request to the server
      */
-    public boolean login(String loginMSG){
-        JSONObject json = JSONObject.parseObject(loginMSG);
-        json.put("MSGType", "login");
+    public boolean login(JSONObject json){
+        json.put("MSGType", "LOGIN");
 
         SimpleClient client = new SimpleClient();
         if (client.isConnected()){
@@ -49,14 +47,16 @@ public class UserAccountClientManager {
             json = JSONObject.parseObject(client.get());
             if (json.getString("userID") != null){
                 this.user = new UserAccount(json);
-                this.user.setOnline(true);
+                client.close();
                 return true;
-            }else{
-                return false;
             }
-        }else{
-            return false;
         }
+        client.close();
+        return false;
+    }
+
+    public UserAccount getCurrentUser(){
+        return this.user;
     }
 
 

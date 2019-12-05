@@ -7,23 +7,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperplane.R;
-
 import java.util.ArrayList;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
-    private ArrayList<Message> dataList;
+    private ArrayList<ChatWindowMessage> dataList;
 
-    public ChatAdapter(ArrayList<Message> dataList){
+    public ChatAdapter(ArrayList<ChatWindowMessage> dataList){
         this.dataList = dataList;
     }
 
-    public void setDataList(ArrayList<Message> dataList) {
+    public void setDataList(ArrayList<ChatWindowMessage> dataList) {
         this.dataList = dataList;
     }
 
-    public void replaceAll(ArrayList<Message> list){
+    public void replaceAll(ArrayList<ChatWindowMessage> list){
         dataList.clear();
         if(list != null && list.size() > 0){
             dataList.addAll(list);
@@ -31,7 +29,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void addAll(ArrayList<Message> list){
+    public void addAll(ArrayList<ChatWindowMessage> list){
         if(dataList != null && list != null){
             dataList.addAll(list);
             notifyItemRangeChanged(dataList.size(), list.size());
@@ -41,9 +39,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public ChatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         switch(viewType){
-            case Message.SEND:
+            case ChatWindowMessage.SEND:
                 return new RightViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right, parent, false));
-            case Message.RECEIVE:
+            case ChatWindowMessage.RECEIVE:
                 return new LeftViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left, parent, false));
         }
         return null;
@@ -87,7 +85,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         @Override
         void setData(Object object){
             super.setData(object);
-            Message message = (Message)object;
+            ChatWindowMessage message = (ChatWindowMessage)object;
             user_icon.setImageResource(message.getIcon());
             text.setText(message.getContent());
         }
@@ -106,7 +104,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         @Override
         void setData(Object object) {
             super.setData(object);
-            Message message = (Message)object;
+            ChatWindowMessage message = (ChatWindowMessage)object;
             user_icon.setImageResource(message.getIcon());
             text.setText(message.getContent());
         }
