@@ -1,4 +1,6 @@
 import java.util.*;
+import java.net.*;
+import java.io.*;
 import com.alibaba.fastjson.*;
 
 /**
@@ -8,31 +10,36 @@ import com.alibaba.fastjson.*;
  * created to wait and push message for server
  */
 public class PushMessageDelegate implements Runnable{
-    public PushMessageDelegate(ServerSocket server, DataOutputStream output, JSONObject json){
+    public PushMessageDelegate(Socket server, DataOutputStream output, JSONObject json){
         this.server = server;
         this.output = output;
-        this.message = json.getString("message");
+        this.message = json;
     }
     /**
      * PUBLIC
      */
 
-    @Override
     public void run(){
         String id = this.message.getString("userID");
-        while (!ChatServerManager.getInstance().hasMessage(id)){
-            //don't be too busy
-            Thread.currentThread().sleep(1000);
+        try{
+            while (!ChatServerManager.getInstance().hasMessage(id)){
+                //don't be too busy
+                    Thread.currentThread().sleep(1000);
+            }
+            //send message
+            this.output.writeUTF(ChatServerManager.getInstance().getOfflineChatMessage(id));
+            this.server.close();
+        }catch(InterruptedException ie){
+            ie.printStackTrace();
+        }catch(IOException ioe){
+            ioe.printStackTrace();
         }
-        //send message
-        output.writeUTF(ChatServerManager.getInstance().getOfflineChatMessage(message));
-        server.close();
     }
 
     /**
      * PRIVATE
      */
-    private ServerSocket server;
+    private Socket server;
     private DataOutputStream output;
     private JSONObject message;
 }

@@ -1,7 +1,6 @@
 
 import com.alibaba.fastjson.*;
 
-
 /**
  * @Author scudrt
  * @Description
@@ -28,10 +27,11 @@ public class UserAccountClientManager {
         if (client.isConnected()){
             client.send(json.toJSONString());
             json = JSONObject.parseObject(client.get());
+            client.close();
             return json.getBoolean("result") == true;
-        }else{
-            return false;
         }
+        client.close();
+        return false;
     }
 
     /**
@@ -47,13 +47,12 @@ public class UserAccountClientManager {
             json = JSONObject.parseObject(client.get());
             if (json.getString("userID") != null){
                 this.user = new UserAccount(json);
+                client.close();
                 return true;
-            }else{
-                return false;
             }
-        }else{
-            return false;
         }
+        client.close();
+        return false;
     }
 
     public UserAccount getCurrentUser(){

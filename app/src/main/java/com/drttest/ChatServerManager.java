@@ -5,7 +5,7 @@ import java.util.*;
  * @Description
  * manage and distribute users' chatting messages for server
  */
-public class ChatServerManager implements Runnable{
+public class ChatServerManager{
     private ChatServerManager(){
         this.messageKeeper = new HashMap<String, ArrayList<ChatMessage>>();
     }
@@ -50,9 +50,8 @@ public class ChatServerManager implements Runnable{
       * @Description
       * return user's offline chatting message
       */
-    public String getOfflineChatMessage(JSONObject json){
+    public String getOfflineChatMessage(String id){
         //TODO: check if  the user is online
-        String id = json.getString("userID");
         JSONObject res = new JSONObject();
         res.put("size", 0);
 
@@ -77,7 +76,7 @@ public class ChatServerManager implements Runnable{
     }
 
     public boolean hasMessage(String userID){
-        if (usedID != null){
+        if (userID != null){
             ArrayList<ChatMessage> messages = this.messageKeeper.get(userID);
             return messages != null && messages.size() > 0;
         }else{
