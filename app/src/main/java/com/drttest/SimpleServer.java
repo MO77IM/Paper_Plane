@@ -51,16 +51,22 @@ public class SimpleServer implements Runnable{
             try{
                 while (true){
                     server = this.serverSocket.accept();
-                    Logger.log("new connection from " + server.getRemoteSocketAddress());
-
                     input = new DataInputStream(server.getInputStream());
                     output = new DataOutputStream(server.getOutputStream());
-                    res = ""; //response string
                     
-                    loader = JSONObject.parseObject(input.readUTF());
+                    //convert input message to JSON
+                    res = input.readUTF();
+                    loader = JSONObject.parseObject(res);
+
+                    //log message
+                    Logger.log("new connection from "+
+                                server.getRemoteSocketAddress() + " :\n"+
+                                "message: " + res);
+                    res = "";
+
+                    //check the type of message
                     type = loader.getString("MSGType");
                     if (type != null){
-                        Logger.log("request type: " + type);
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
                             Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
