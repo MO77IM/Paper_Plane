@@ -5,6 +5,22 @@ public class Test{
     public static void main(String[] args){
         JSONObject json = new JSONObject();
 
+        json.put("userID", "trnb");
+        json.put("password", "123456");
+        boolean result = UserAccountClientManager.getInstance().login(json);
+        if (result){
+            System.out.println("login ok");
+            SimpleClient client = new SimpleClient();
+            if (client.isConnected()){
+                json.put("MSGType", "GET_ONLINE_USERS");
+                json.remove("userID");
+                json.remove("password");
+                client.send(json.toJSONString());
+                System.out.println(client.get());
+                client.close();
+            }
+        }
+/*
         if (args[0].equals("send")){ //send message
             //sign up
             json.put("userID", "scudrt");
@@ -64,5 +80,6 @@ public class Test{
                 System.out.println("login failed");
             }
         }
+        */
     }
 }

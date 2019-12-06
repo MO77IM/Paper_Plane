@@ -23,7 +23,7 @@ public class SimpleServer implements Runnable{
         try{
             this.serverSocket = new ServerSocket(_port);
             this.setTimeout(DEFAULT_TIMEOUT);
-            System.out.println("Server listening on port " + _port);
+            Logger.log("Server listening on port " + _port);
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
@@ -51,9 +51,7 @@ public class SimpleServer implements Runnable{
             try{
                 while (true){
                     server = this.serverSocket.accept();
-                    //TODO: save logs in the files
-                    System.out.println("\n" + (new Date()).toString() + ":");
-                    System.out.println("connected to " + server.getRemoteSocketAddress());
+                    Logger.log("new connection from " + server.getRemoteSocketAddress());
 
                     input = new DataInputStream(server.getInputStream());
                     output = new DataOutputStream(server.getOutputStream());
@@ -62,7 +60,7 @@ public class SimpleServer implements Runnable{
                     loader = JSONObject.parseObject(input.readUTF());
                     type = loader.getString("MSGType");
                     if (type != null){
-                        System.out.println("request: " + type);
+                        Logger.log("request type: " + type);
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
                             Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
