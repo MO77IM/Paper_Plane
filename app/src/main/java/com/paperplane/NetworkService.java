@@ -2,6 +2,7 @@ package com.paperplane;
 
 import android.app.Service;
 import android.content.Intent;
+import android.net.sip.SipSession;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -12,12 +13,11 @@ import com.alibaba.fastjson.JSONObject;
 public class NetworkService extends Service {
 
     private NetworkReceiveTask networkReceiveTask;
-    private NetworkSendTask networkSendTask;
     private ChatClientManager chatClientManager;
 
     private NetworkBinder nBinder = new NetworkBinder();
 
-    private NetworkListener listener = new NetworkListener() {
+    private NetworkListener receiveListener = new NetworkListener() {
         @Override
         public void onReceived(String msg) {
             JSONObject loader = JSONObject.parseObject(msg);
@@ -51,10 +51,8 @@ public class NetworkService extends Service {
         super.onCreate();
 
         chatClientManager = ChatClientManager.getInstance();
-        networkReceiveTask = new NetworkReceiveTask(listener);
-        networkSendTask = new NetworkSendTask(listener);
+        networkReceiveTask = new NetworkReceiveTask(receiveListener);
         networkReceiveTask.execute();
-        networkSendTask.execute();
         Log.d("NetworkService", "onCreate");
     }
 
@@ -78,8 +76,18 @@ public class NetworkService extends Service {
 
     class NetworkBinder extends Binder{
 
-        public void SendMessage(String msg){
-            networkSendTask.SendMessage(msg);
+        private String res;
+
+        public String SendMessage(String msg){
+            NetworkListener listener = new NetworkListener() {
+                @Override
+                public void onReceived(String content) {
+                    res = content;
+                }
+            };
+            NetworkSendTask networkSendTask = new NetworkSendTask(listener);
+            networkSendTask.execute(msg);
+            return res;
         }
     }
 }

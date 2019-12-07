@@ -34,8 +34,6 @@ public class ChatWindow extends AppCompatActivity {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             networkBinder = (NetworkService.NetworkBinder) iBinder;
             chatClientManager.setNetworkBinder(networkBinder);
-            Log.d("ChatWindow","connection create binder");
-            Log.d("ChatWindow", (new Boolean(networkBinder == null)).toString());
         }
 
         @Override
