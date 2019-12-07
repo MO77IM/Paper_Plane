@@ -102,7 +102,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"/>
             <EditText
-                android:id="@+id/et_password"
+                android:id="@+id/password_1"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center_vertical"
@@ -160,13 +160,14 @@
         android:layout_width="match_parent"
         android:layout_height="181dp"
         android:layout_weight="1" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
-        android:text="更多功能请移步公众号获取最新内容"
-        android:textSize="13sp"
-        android:textColor="@android:color/holo_blue_bright"/>
+        android:layout_marginBottom="10dp"
+        android:text="powered by TRNB Group "
+        android:textColor="@android:color/holo_blue_bright"
+        android:textSize="13sp" />
 
 </LinearLayout>
