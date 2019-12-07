@@ -29,33 +29,36 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params){
-        while(true) {
-            Log.d("NetworkReceiveTask", "Looping");
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                while (true) {
+                    if (isStop) {
+                        break;
+                    }
 
-            if(isStop){
-                break;
-            }
-
-            //接收代码
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
-            client = new SimpleClient();
-            try {
-                JSONObject json = new JSONObject();
-                json.put("MSGType", "ASK_MESSAGE");
-                json.put("userID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
-               client.send(json.toJSONString());
-                String msg = client.get();
-            if(msg != null){
-                    publishProgress(msg);
+                    //接收代码
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    client = new SimpleClient();
+                    try {
+                        JSONObject json = new JSONObject();
+                        json.put("MSGType", "ASK_MESSAGE");
+                        json.put("userID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
+                        client.send(json.toJSONString());
+                        String msg = client.get();
+                        if (msg != null) {
+                            publishProgress(msg);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }catch (Exception e){
-                e.printStackTrace();
             }
-        }
+        }).run();
         return true;
     }
 

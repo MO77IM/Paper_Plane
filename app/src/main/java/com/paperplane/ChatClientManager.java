@@ -11,6 +11,8 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class ChatClientManager {
     private ArrayList<PrivateChat> chatList;
     private PrivateChat currentChat;
@@ -52,7 +54,12 @@ public class ChatClientManager {
 
     public void startChat(UserAccount targetUser){
         PrivateChat privateChat = new PrivateChat(targetUser);
+        Log.d(TAG, "startChat: " + chatList.size());
         chatList.add(privateChat);
+        if(chatWindowListener!=null)
+            chatWindowListener.OnRefresh();
+        if(chatListListener!=null)
+            chatListListener.OnRefresh();
     }
 
     public void delChat(PrivateChat privateChat){

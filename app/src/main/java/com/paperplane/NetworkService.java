@@ -10,12 +10,19 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static android.support.constraint.Constraints.TAG;
+
 public class NetworkService extends Service {
 
     private NetworkReceiveTask networkReceiveTask;
     private ChatClientManager chatClientManager;
 
     private NetworkBinder nBinder = new NetworkBinder();
+
+    ExecutorService executors = Executors.newCachedThreadPool();
 
     private NetworkListener receiveListener = new NetworkListener() {
         @Override
@@ -52,7 +59,7 @@ public class NetworkService extends Service {
 
         chatClientManager = ChatClientManager.getInstance();
         networkReceiveTask = new NetworkReceiveTask(receiveListener);
-        networkReceiveTask.execute();
+        networkReceiveTask.executeOnExecutor(executors);
         Log.d("NetworkService", "onCreate");
     }
 
@@ -85,6 +92,7 @@ public class NetworkService extends Service {
                     res = content;
                 }
             };
+            Log.d(TAG, "SendMessage: "+res);
             NetworkSendTask networkSendTask = new NetworkSendTask(listener);
             networkSendTask.execute(msg);
             return res;
