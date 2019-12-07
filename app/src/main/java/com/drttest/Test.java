@@ -26,7 +26,7 @@ public class Test{
             //sign up
             json.put("userID", "scudrt");
             json.put("password", "123456");
-            boolean result = UserAccountClientManager.getInstance().signup(json);
+            boolean result = UserAccountClientManager.getInstance().signup(json).getBoolean("result");
             if (result){
                 System.out.println("sign up succeed");
             }else{
@@ -56,7 +56,7 @@ public class Test{
             //sign up
             json.put("userID", "trnb");
             json.put("password", "123456");
-            boolean result = UserAccountClientManager.getInstance().signup(json);
+            boolean result = UserAccountClientManager.getInstance().signup(json).getBoolean("result");
             if (result){
                 System.out.println("sign up succeed");
             }else{

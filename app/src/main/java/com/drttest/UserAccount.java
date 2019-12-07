@@ -11,7 +11,7 @@ public class UserAccount {
         this.birthday = this.signupTime;
         this.userID = _id;
         this.password = _pwd;
-        this.icon = R.mipmap.ic_launcher;
+        this.icon = 0;
     }
     public UserAccount(JSONObject userJSON){
         this.signupTime = userJSON.getString("signupTime");
