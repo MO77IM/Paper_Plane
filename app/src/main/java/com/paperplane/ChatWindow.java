@@ -23,6 +23,8 @@ public class ChatWindow extends AppCompatActivity {
     ChatAdapter adapter;
     LinearLayoutManager layoutManager;
 
+    private ChatListener listener;
+
     ChatClientManager chatClientManager = ChatClientManager.getInstance();
 
     private NetworkService.NetworkBinder networkBinder;
@@ -75,6 +77,17 @@ public class ChatWindow extends AppCompatActivity {
                 input.setText("");
             }
         });
+
+        listener = new ChatListener() {
+            @Override
+            public void OnRefresh() {
+                adapter.notifyDataSetChanged();
+                adapter.notifyItemInserted(privateChat.getMessages().size() - 1);
+                recyclerView.scrollToPosition(privateChat.getMessages().size() - 1);
+            }
+        };
+
+        chatClientManager.setChatWindowListener(listener);
     }
 
     @Override

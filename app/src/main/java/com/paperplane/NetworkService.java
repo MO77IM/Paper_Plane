@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 public class NetworkService extends Service {
@@ -23,11 +24,20 @@ public class NetworkService extends Service {
             String type = loader.getString("MSGType");
             if(type!=null){
                 if(type.equals("SEND_TO")){//用户间发送消息
-                    PrivateChat privateChat = chatClientManager.getChatByUserId(loader.getString("UserID"));
-                    if(privateChat == null){//当前聊天列表未创建与目标用户的聊天，在好友中搜索该用户
-                        //代码
+                    PrivateChat privateChat = chatClientManager.getChatByUserId(loader.getString("userID"));
+                    if(privateChat == null){//当前聊天列表未创建与目标用户的聊天创建聊天窗口
+                        SimpleClient client = new SimpleClient();
+                        JSONObject json = new JSONObject();
+                        json.put("MSGType", "GET_USER");
+                        json.put("userID", loader.getString("userID"));
+                        client.send(json.toJSONString());
+                        String userStr = client.get();
+                        json = JSONObject.parseObject(userStr);
+                        UserAccount user = new UserAccount(json);
+                        chatClientManager.startChat(user);
+                        privateChat = chatClientManager.getChatByUser(user);
                     }
-                    privateChat.ReceiveTextMessage(loader.getString("content"));
+                    chatClientManager.receiveTextMessage(privateChat, loader.getString("message"));
                 }
             }
         }
