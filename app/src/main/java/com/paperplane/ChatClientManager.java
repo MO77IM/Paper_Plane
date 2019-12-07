@@ -19,6 +19,17 @@ public class ChatClientManager {
 
     static private ChatClientManager instance;
 
+    private ChatListener chatWindowListener;
+    private ChatListener chatListListener;
+
+    public void setChatWindowListener(ChatListener chatWindowListener) {
+        this.chatWindowListener = chatWindowListener;
+    }
+
+    public void setChatListListener(ChatListener chatListContext) {
+        this.chatListListener = chatListListener;
+    }
+
     private ChatClientManager(){
         chatList = new ArrayList<PrivateChat>();
         currentChat = null;
@@ -101,5 +112,16 @@ public class ChatClientManager {
         }
         if(networkBinder != null)
             networkBinder.SendMessage(json.toJSONString());
+    }
+
+    public void receiveTextMessage(PrivateChat privateChat, String msg){
+        privateChat.ReceiveTextMessage(msg);
+        //如果聊天窗口或列表界面处于活动状态，刷新
+        if(chatListListener!=null){
+            chatListListener.OnRefresh();
+        }
+        if(chatWindowListener!=null){
+            chatWindowListener.OnRefresh();
+        }
     }
 }

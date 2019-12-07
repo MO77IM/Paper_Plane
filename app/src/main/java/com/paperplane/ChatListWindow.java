@@ -9,6 +9,8 @@ public class ChatListWindow extends AppCompatActivity {
 
     private ChatClientManager chatClientManager;
 
+    private ChatListener listener;
+
     private RecyclerView recyclerView;
     private ChatWindowAdapter adapter;
     private LinearLayoutManager layoutManager;
@@ -24,11 +26,24 @@ public class ChatListWindow extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ChatWindowAdapter(this, chatClientManager.getChatList());
         recyclerView.setAdapter(adapter);
+
+        listener = new ChatListener() {
+            @Override
+            public void OnRefresh() {
+                adapter.notifyDataSetChanged();
+                adapter.notifyItemInserted(chatClientManager.getChatSize() - 1);
+                recyclerView.scrollToPosition(chatClientManager.getChatSize() - 1);
+            }
+        };
+
+        chatClientManager.setChatListListener(listener);
     }
 
     @Override
     protected void onStart(){
         super.onStart();
         adapter.notifyDataSetChanged();
+        adapter.notifyItemInserted(chatClientManager.getChatSize() - 1);
+        recyclerView.scrollToPosition(chatClientManager.getChatSize() - 1);
     }
 }
