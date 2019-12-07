@@ -11,7 +11,7 @@ public class UserAccount {
         this.birthday = this.signupTime;
         this.userID = _id;
         this.password = _pwd;
-        //this.icon = R.mipmap.ic_launcher;
+        this.icon = R.mipmap.ic_launcher;
     }
     public UserAccount(JSONObject userJSON){
         this.signupTime = userJSON.getString("signupTime");
@@ -19,7 +19,7 @@ public class UserAccount {
         this.userID = userJSON.getString("userID");
         this.nickname = userJSON.getString("nickname");
         this.password = userJSON.getString("password");
-        //this.icon = R.mipmap.ic_launcher;
+        this.icon = userJSON.getInteger("icon");
     }
     
     /** PUBLIC */
@@ -44,7 +44,6 @@ public class UserAccount {
     public String getOnlineIP(){
         return this.onlineIP;
     }
-
     public int getIcon() {
         return icon;
     }
@@ -67,7 +66,6 @@ public class UserAccount {
     public void setOnlineIP(String _onlineIP){
         this.onlineIP = _onlineIP;
     }
-
     public void setIcon(int icon) {
         this.icon = icon;
     }
