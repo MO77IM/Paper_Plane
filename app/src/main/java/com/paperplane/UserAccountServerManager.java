@@ -1,5 +1,6 @@
 package com.paperplane;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.FileReader;
@@ -81,6 +82,30 @@ public class UserAccountServerManager {
         return res.toJSONString();
     }
 
+    public String getOnlineUsers(){
+        JSONObject res = new JSONObject();
+        
+        int size = 0;
+        String userStr;
+        UserAccount user;
+        JSONObject userJSON;
+        Iterator<Map.Entry<String, UserAccount>> it = this.users.entrySet().iterator();
+        while (it.hasNext()){
+            user = it.next().getValue();
+            if (user.isOnline()){
+                userStr = JSON.toJSONString(user);
+                userJSON = JSONObject.parseObject(userStr);
+                //don't send important information
+                userJSON.remove("password");
+                userJSON.remove("onlineIP");
+                res.put("user" + size, userJSON);
+                ++size;
+            }
+        }
+        res.put("size", size);
+        return res.toJSONString();
+    }
+
     public UserAccount getUserByID(String id){
         return this.users.get(id);
     }
@@ -104,7 +129,7 @@ public class UserAccountServerManager {
             }
             //reconstructing user-map
             JSONObject json = JSONObject.parseObject(str);
-            n = json.getInteger("count"); //get users' count
+            n = json.getInteger("size"); //get users' count
             for (int i=0;i<n;++i){
                 str = "user" + i;
                 user = new UserAccount(json.getJSONObject(str));
@@ -125,7 +150,7 @@ public class UserAccountServerManager {
             FileWriter f = new FileWriter("./UserAccounts.xml");
             JSONObject json = new JSONObject();
             int n = this.users.size();
-            json.put("count", n);
+            json.put("size", n);
             Iterator<Map.Entry<String, UserAccount>> entries = this.users.entrySet().iterator();
             for (int i=0;i<n;++i){
                 Map.Entry<String, UserAccount> it = entries.next();

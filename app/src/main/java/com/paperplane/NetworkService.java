@@ -10,7 +10,8 @@ import com.alibaba.fastjson.JSONObject;
 
 public class NetworkService extends Service {
 
-    private NetworkTask networkTask;
+    private NetworkReceiveTask networkReceiveTask;
+    private NetworkSendTask networkSendTask;
     private ChatClientManager chatClientManager;
 
     private NetworkBinder nBinder = new NetworkBinder();
@@ -30,11 +31,6 @@ public class NetworkService extends Service {
                 }
             }
         }
-
-        @Override
-        public void onSend(){
-
-        }
     };
 
     public NetworkService() {
@@ -45,8 +41,10 @@ public class NetworkService extends Service {
         super.onCreate();
 
         chatClientManager = ChatClientManager.getInstance();
-        networkTask = new NetworkTask(listener);
-        networkTask.execute();
+        networkReceiveTask = new NetworkReceiveTask(listener);
+        networkSendTask = new NetworkSendTask(listener);
+        networkReceiveTask.execute();
+        networkSendTask.execute();
         Log.d("NetworkService", "onCreate");
     }
 
@@ -71,7 +69,7 @@ public class NetworkService extends Service {
     class NetworkBinder extends Binder{
 
         public void SendMessage(String msg){
-            networkTask.SendMessage(msg);
+            networkSendTask.SendMessage(msg);
         }
     }
 }

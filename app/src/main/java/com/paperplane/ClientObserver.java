@@ -1,7 +1,9 @@
-package com.drttest;
-import java.util.*;
-import java.net.*;
-import java.io.*;
+package com.paperplane;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class ClientObserver extends Thread{
     public ClientObserver(Socket client, DataInputStream input, DataOutputStream output){

@@ -1,7 +1,10 @@
-package com.drttest;
-import java.io.*;
-import java.util.*;
-import com.alibaba.fastjson.*;
+package com.paperplane;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Logger{
     static final int THRESHOLD = 1000; //size of each log file

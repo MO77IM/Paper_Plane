@@ -5,13 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.Date;
 
 //TODO: convert this class to JSONObject
-public class UserAccount{
+public class UserAccount {
     public UserAccount(String _id, String _pwd){
         this.signupTime = new Date().toString();
         this.birthday = this.signupTime;
         this.userID = _id;
         this.password = _pwd;
-        this.icon = R.mipmap.ic_launcher;
+        //this.icon = R.mipmap.ic_launcher;
     }
     public UserAccount(JSONObject userJSON){
         this.signupTime = userJSON.getString("signupTime");
@@ -19,7 +19,7 @@ public class UserAccount{
         this.userID = userJSON.getString("userID");
         this.nickname = userJSON.getString("nickname");
         this.password = userJSON.getString("password");
-        this.icon = R.mipmap.ic_launcher;
+        //this.icon = R.mipmap.ic_launcher;
     }
     
     /** PUBLIC */

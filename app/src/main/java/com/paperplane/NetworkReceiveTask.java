@@ -5,19 +5,17 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class NetworkTask extends AsyncTask<Void, String, Boolean> {
+public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
 
     private NetworkListener listener;
 
     private boolean isStop = false;
-    private boolean isSend = false;
     private SimpleClient client;
-    private String sendMSG="";
 
     private ChatClientManager chatClientManager;
 
 
-    public NetworkTask(NetworkListener listener){
+    public NetworkReceiveTask(NetworkListener listener){
         super();
         this.listener = listener;
 
@@ -32,19 +30,10 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
     @Override
     protected Boolean doInBackground(Void... params){
         while(true) {
-            Log.d("NetworkTask", "Looping");
+            Log.d("NetworkReceiveTask", "Looping");
 
             if(isStop){
                 break;
-            }
-            if(isSend){
-                //发送代码
-                Log.d("NetworkTask","Send msg");
-                client = new SimpleClient();
-                client.send(sendMSG);
-                String res = client.get();
-                Log.d("NetworkTask", "message:" + res);
-                isSend = false;
             }
 
             //接收代码
@@ -56,8 +45,8 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
             client = new SimpleClient();
             try {
                 JSONObject json = new JSONObject();
-                json.put("MSGType", "NO_MEANING");
-                json.put("UserID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
+                json.put("MSGType", "ASK_MESSAGE");
+                json.put("userID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
                client.send(json.toJSONString());
                 String msg = client.get();
             if(msg != null){
@@ -83,10 +72,5 @@ public class NetworkTask extends AsyncTask<Void, String, Boolean> {
 
     public void StopNetwork(){
         isStop = true;
-    }
-
-    public void SendMessage(String msg){
-        isSend = true;
-        sendMSG = msg;
     }
 }

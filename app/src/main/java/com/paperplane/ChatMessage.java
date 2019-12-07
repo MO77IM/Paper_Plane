@@ -1,6 +1,8 @@
-package com.drttest;
-import java.util.*;
-import com.alibaba.fastjson.*;
+package com.paperplane;
+
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.Date;
 
 public class ChatMessage{
     public ChatMessage(){

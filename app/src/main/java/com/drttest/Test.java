@@ -1,4 +1,5 @@
 // powered bu SCUDRT
+package com.drttest;
 import com.alibaba.fastjson.*;
 
 public class Test{

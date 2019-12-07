@@ -91,8 +91,11 @@ public class ChatClientManager {
 
         JSONObject json = new JSONObject();
         try {
-            json.put("MSGType", "ping");
-            json.put("content",msg);
+            json.put("MSGType", "SEND_TO");
+            ChatMessage chatMessage = new ChatMessage(msg);
+            chatMessage.setReceiverID(privateChat.getTargetUser().getUserID());
+            chatMessage.setSenderID(UserAccountClientManager.getInstance().getCurrentUser().getUserID());
+            json.put("message",chatMessage);
         }catch (Exception e){
             e.printStackTrace();
         }
