@@ -4,7 +4,7 @@ import com.alibaba.fastjson.*;
 public class Test{
     public static void main(String[] args){
         JSONObject json = new JSONObject();
-
+/*
         json.put("userID", "trnb");
         json.put("password", "123456");
         boolean result = UserAccountClientManager.getInstance().login(json);
@@ -19,8 +19,8 @@ public class Test{
                 System.out.println(client.get());
                 client.close();
             }
-        }
-/*
+        }*/
+
         if (args[0].equals("send")){ //send message
             //sign up
             json.put("userID", "scudrt");
@@ -72,14 +72,13 @@ public class Test{
                 SimpleClient client = new SimpleClient();
                 if (client.isConnected()){
                     client.send(json.toJSONString());
-                    System.out.println("message sent");
-                    System.out.println(json.toJSONString());
+                    System.out.println("message sent: " + json.toJSONString());
                     System.out.println(client.get());
                 }
             }else{
                 System.out.println("login failed");
             }
         }
-        */
+        
     }
 }

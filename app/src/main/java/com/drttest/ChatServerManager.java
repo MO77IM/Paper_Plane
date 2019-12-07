@@ -23,7 +23,7 @@ public class ChatServerManager{
       * save offline chatting messages for users
       */
      public String addOfflineChatMessage(JSONObject chatJSON){
-         chatJSON = chatJSON.getJSONObject("message"); //get message json in json message
+         chatJSON = chatJSON.getJSONObject("message"); //take message
          String receiverID = chatJSON.getString("receiverID");
          String senderID = chatJSON.getString("senderID");
          JSONObject res = new JSONObject();
@@ -31,7 +31,7 @@ public class ChatServerManager{
 
          //check if sender and receiver exists
          UserAccountServerManager instance = UserAccountServerManager.getInstance();
-         if (instance.getUserByID(receiverID) != null){ //exists
+         if (instance.getUserByID(receiverID) != null){ //legal id
              if (instance.getUserByID(senderID) != null){
                  //save message for the receiver
                  ArrayList<ChatMessage> messages = this.messageKeeper.get(receiverID);
@@ -64,12 +64,12 @@ public class ChatServerManager{
                 res.put("size", n);
                 //put messages into response json
                 for (int i=0;i<n;++i){
-                    temp = messages.get(i);
+                    temp = messages.get(0);
                     res.put("message"+i, temp);
-                    messages.remove(i);
+                    messages.remove(0);
                 }
-                //log
-                System.out.println(res.toJSONString());
+                //logging
+                Logger.log("send offline messages: " + res.toJSONString());
             }
         }
         return res.toJSONString();

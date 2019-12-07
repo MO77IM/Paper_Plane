@@ -85,6 +85,7 @@ public class SimpleServer implements Runnable{
                         }else if (type.equals("PING")) {
                             res = "Hello from server " + server.getLocalSocketAddress();
                         }
+                        output.writeByte(0); //confirm byte
                         output.writeUTF(res);
                     }
                     server.close();

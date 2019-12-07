@@ -4,17 +4,19 @@ import java.net.*;
 import java.io.*;
 import com.alibaba.fastjson.*;
 
-public class SimpleClient{
+public class SimpleClient extends Thread{
     static final String SERVER_IP = "127.0.0.1"; // "47.103.198.96";
     static final int SERVER_PORT = 3000; // 3000
 
     public SimpleClient(){
         this.connect(SERVER_IP, SERVER_PORT);
+        //prevent unexpected shutdown
+        Runtime.getRuntime().addShutdownHook(new ClientObserver(clientSocket, input, output));
     }
-    //not provided
+    /*
     public SimpleClient(String _serverIP, int _port){
         this.connect(_serverIP, _port);
-    }
+    }*/
 
     /**
      * PUBLIC
@@ -47,7 +49,7 @@ public class SimpleClient{
     public boolean isConnected(){
         // return false if connection failed
         if (this.clientSocket != null){
-            return this.clientSocket.getRemoteSocketAddress() != null;
+            return !this.clientSocket.isClosed();
         }else{
             return false;
         }
@@ -72,6 +74,7 @@ public class SimpleClient{
         //get string from server
         try{
             if (this.input != null){
+                this.input.readByte(); //confirm byte
                 return this.input.readUTF();
             }else{
                 return null;
@@ -84,9 +87,15 @@ public class SimpleClient{
 
     public void close(){
         try{
-            this.input.close();
-            this.output.close();
-            this.clientSocket.close();
+            if (this.input != null){
+                this.input.close();
+            }
+            if (this.output != null){
+                this.output.close();
+            }
+            if (this.clientSocket != null){
+                this.clientSocket.close();
+            }
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
