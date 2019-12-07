@@ -1,5 +1,5 @@
-package com.paperplane;//powered by SCUDRT
-
+//powered by SCUDRT
+package com.paperplane;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.Date;
@@ -44,7 +44,6 @@ public class UserAccount {
     public String getOnlineIP(){
         return this.onlineIP;
     }
-
     public int getIcon() {
         return icon;
     }
@@ -67,7 +66,6 @@ public class UserAccount {
     public void setOnlineIP(String _onlineIP){
         this.onlineIP = _onlineIP;
     }
-
     public void setIcon(int icon) {
         this.icon = icon;
     }

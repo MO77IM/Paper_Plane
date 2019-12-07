@@ -1,6 +1,10 @@
-package com.paperplane;//powered by SCUDRT
+//powered by SCUDRT
+package com.paperplane;
 
 import com.alibaba.fastjson.JSONObject;
+import com.drttest.ChatServerManager;
+import com.drttest.Logger;
+import com.drttest.PushMessageDelegate;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -58,7 +62,7 @@ public class SimpleServer implements Runnable{
                     server = this.serverSocket.accept();
                     input = new DataInputStream(server.getInputStream());
                     output = new DataOutputStream(server.getOutputStream());
-                    
+
                     //convert input message to JSON
                     res = input.readUTF();
                     loader = JSONObject.parseObject(res);
@@ -77,9 +81,10 @@ public class SimpleServer implements Runnable{
                             Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
                             pushThread.start();
                             break;
-                            //res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
                         }else if (type.equals("SEND_TO")){
                             res = ChatServerManager.getInstance().addOfflineChatMessage(loader);
+                        }else if (type.equals("GET_USER")){
+                            res = UserAccountServerManager.getInstance().getUserStringByID(loader);
                         }else if (type.equals("GET_ONLINE_USERS")){
                             res = UserAccountServerManager.getInstance().getOnlineUsers();
                         }else if (type.equals("SIGN_UP")){

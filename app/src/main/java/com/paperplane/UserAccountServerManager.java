@@ -2,6 +2,7 @@ package com.paperplane;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.paperplane.Logger;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,6 +10,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+//import javax.swing.text.html.parser.Entity;
 
 /**
 * @Author scudrt
@@ -37,22 +40,25 @@ public class UserAccountServerManager {
      * Sign up for the new user, return sign up result true if succeed
      */
     public String signup(JSONObject json){
-        //TODO: save the sign up record in the server
         JSONObject res = new JSONObject();
         res.put("result", false);
         String id = json.getString("userID");
         if (id != null) {
             if (this.getUserByID(id) == null) { //user not exists
-                //TODO: check if the password is legal enough
                 String pwd = json.getString("password");
-                if (pwd != null && pwd.length() >= 6) { //ok
+                if (pwd != null && pwd.length() >= 6 && pwd.contains(" ")) { //ok
                     UserAccount newUser = new UserAccount(id, pwd);
                     this.users.put(id, newUser);
-                    //TODO: should only save new user
                     this.saveUsers();
                     res.put("result", true);
+                }else{
+                    res.put("response", "illegal password");
                 }
+            }else{
+                res.put("response", "user exists");
             }
+        }else{
+            res.put("response", "userID no found");
         }
         return res.toJSONString();
     }
@@ -62,7 +68,6 @@ public class UserAccountServerManager {
      * return login result true if succeed
      */
     public String login(JSONObject json){
-        //TODO: save the login record in the server
         JSONObject res = new JSONObject(); //response
         String id = json.getString("userID");
 
@@ -84,7 +89,7 @@ public class UserAccountServerManager {
 
     public String getOnlineUsers(){
         JSONObject res = new JSONObject();
-        
+
         int size = 0;
         String userStr;
         UserAccount user;
@@ -104,6 +109,19 @@ public class UserAccountServerManager {
         }
         res.put("size", size);
         return res.toJSONString();
+    }
+
+    public String getUserStringByID(JSONObject json){
+        String id = json.getString("userID");
+        UserAccount user = this.getUserByID(id);
+        if (user != null){
+            JSONObject res = (JSONObject) JSONObject.toJSON(user);
+            res.remove("onlineIP");
+            res.remove("password");
+            return res.toJSONString();
+        }else{
+            return "{}";
+        }
     }
 
     public UserAccount getUserByID(String id){
@@ -136,10 +154,10 @@ public class UserAccountServerManager {
                 this.users.put(user.getUserID(), user);
             }
             //log
-            System.out.println("file loaded, " + n + " users found.");
+            Logger.log("file loaded, " + n + " users found.");
             return true;
         }catch(IOException e){
-            System.out.println("user file no found");
+            Logger.log("user file no found");
             return false;
         }
     }
@@ -159,7 +177,7 @@ public class UserAccountServerManager {
             f.write(json.toJSONString());
             f.flush();
             f.close();
-            System.out.println("saved " + n + " users");
+            Logger.log(n + " users were saved.");
             return true;
         }catch(IOException e){
             e.printStackTrace();

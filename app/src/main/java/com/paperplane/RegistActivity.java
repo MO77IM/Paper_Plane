@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-///import androidx.annotation.Nullable;
-//import androidx.appcompat.app.AppCompatActivity;
 import android.support.v7.app.AppCompatActivity;
 
+import com.alibaba.fastjson.*;
+
 public class RegistActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editTextP,editTextCT,editTextSMS;//输入框：电话、密码、验证码
+    private EditText editTextP,editTextPWD0,editTextPWD1;//输入框：电话、密码、再次输入密码
     private Button button,SMSBtn;//注册按钮、验证码按钮
     private ImageView returnImage;//返回按钮
     private TextView enterText;//登陆按钮
@@ -31,9 +31,9 @@ public class RegistActivity extends AppCompatActivity implements View.OnClickLis
      * 初始化
      */
     private void init() {
-        editTextP=(EditText)findViewById(R.id.et_phone_num);
-        editTextCT=(EditText)findViewById(R.id.et_password);
-        editTextSMS=(EditText) findViewById(R.id.et_sms_code);
+        editTextP=(EditText)findViewById(R.id.user_id);
+        editTextPWD0=(EditText)findViewById(R.id.password_0);
+        editTextPWD1=(EditText) findViewById(R.id.password_1);
         button=(Button)findViewById(R.id.btn_now_register);
         enterText=(TextView)findViewById(R.id.tv_enter);
         returnImage=(ImageView) findViewById(R.id.iv_return);
@@ -50,64 +50,65 @@ public class RegistActivity extends AppCompatActivity implements View.OnClickLis
      */
     @Override
     public void onClick(View v) {
+        //todo: modify it
         switch (v.getId()){
             case R.id.btn_now_register:
                 register();
                 break;
             case R.id.tv_enter:
-                returnEnter();
-                break;
             case R.id.iv_return:
                 returnEnter();
                 break;
             case R.id.bn_sms_code:
                 String phone=editTextP.getText().toString().trim();
-                if(phone.length()!=11){
-                    Toast.makeText(this, "电话号码不可用", Toast.LENGTH_SHORT).show();
-
+                if (phone.length() < 4){
+                    Toast.makeText(this, "用户名过短", Toast.LENGTH_SHORT).show();
+                }else if (phone.contains(" ")){
+                    Toast.makeText(this, "打字不要带空格哦", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(this, "获取成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "用户名合法", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
     }
 
     private void register() {
-        String username=editTextP.getText().toString().trim();//获取电话号
-        String code=editTextSMS.getText().toString().trim();//获取验证码
-        String password=editTextCT.getText().toString().trim();//获取设置密码
-        if(TextUtils.isEmpty(username)){
-            Toast.makeText(this, "未输入手机号", Toast.LENGTH_SHORT).show();
+        final String username = editTextP.getText().toString().trim();
+        final String pwd0 = editTextPWD0.getText().toString().trim();
+        final String pwd1 = editTextPWD1.getText().toString().trim();
+        //check locally
+        if (TextUtils.isEmpty(username)) {
+            Toast.makeText(this, "未输入用户名", Toast.LENGTH_SHORT).show();
             editTextP.requestFocus();
             return;
-        }
-        else if(TextUtils.isEmpty(code)){
-            Toast.makeText(this, "未输入验证码", Toast.LENGTH_SHORT).show();
-            editTextSMS.requestFocus();
-            return;
-        }
-        else if(TextUtils.isEmpty(password)){
+        } else if (TextUtils.isEmpty(pwd0)) {
             Toast.makeText(this, "未设置密码", Toast.LENGTH_SHORT).show();
-            editTextCT.requestFocus();
+            editTextPWD0.requestFocus();
+            return;
+        } else if (TextUtils.isEmpty(pwd1)) {
+            Toast.makeText(this, "请再次输入密码", Toast.LENGTH_SHORT).show();
+            editTextPWD1.requestFocus();
+            return;
+        } else if (!pwd0.equals(pwd1)) {
+            Toast.makeText(this, "两次密码不相同", Toast.LENGTH_SHORT).show();
+            editTextPWD1.requestFocus();
             return;
         }
-        final ProgressDialog pd=new ProgressDialog(this);
-        pd.setMessage("正在注册。。。。" );
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setMessage("正在注册...");
         pd.show();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                }catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                }
-                pd.dismiss();
-                returnEnter();
-            }
-        }).start();//开启线程
+        //send sign up message
+        JSONObject json = new JSONObject();
+        json.put("userID", username);
+        json.put("password", pwd0);
+        json = UserAccountClientManager.getInstance().signup(json);
+        pd.dismiss();
+        if (json.getBoolean("result")) {
+            Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
+            this.returnEnter();
+        } else {
+            Toast.makeText(this, "server: " + json.getString("response"), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

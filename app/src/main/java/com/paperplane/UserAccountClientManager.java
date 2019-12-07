@@ -1,6 +1,7 @@
 package com.paperplane;
 
 import com.alibaba.fastjson.JSONObject;
+import com.paperplane.SimpleClient;
 
 /**
  * @Author scudrt
@@ -22,17 +23,17 @@ public class UserAccountClientManager {
      * @Description
      * post a signup request to the server
      */
-    public boolean signup(JSONObject json){
+    public JSONObject signup(JSONObject json){
         json.put("MSGType", "SIGN_UP");
         SimpleClient client = new SimpleClient();
         if (client.isConnected()){
             client.send(json.toJSONString());
             json = JSONObject.parseObject(client.get());
             client.close();
-            return json.getBoolean("result") == true;
+            return json;
         }
         client.close();
-        return false;
+        return null;
     }
 
     /**

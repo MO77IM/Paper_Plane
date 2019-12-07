@@ -73,9 +73,10 @@ public class SimpleServer implements Runnable{
                             Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
                             pushThread.start();
                             break;
-                            //res = ChatServerManager.getInstance().getOfflineChatMessage(loader);
                         }else if (type.equals("SEND_TO")){
                             res = ChatServerManager.getInstance().addOfflineChatMessage(loader);
+                        }else if (type.equals("GET_USER")){
+                            res = UserAccountServerManager.getInstance().getUserStringByID(loader);
                         }else if (type.equals("GET_ONLINE_USERS")){
                             res = UserAccountServerManager.getInstance().getOnlineUsers();
                         }else if (type.equals("SIGN_UP")){
