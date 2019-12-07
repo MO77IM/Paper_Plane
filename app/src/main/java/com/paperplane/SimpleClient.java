@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class SimpleClient extends Thread{
-    static final String SERVER_IP = "47.103.198.96"; // "47.103.198.96";
+    static final String SERVER_IP = "47.103.198.96"; //47.103.198.96
     static final int SERVER_PORT = 3000; // 3000
 
     public SimpleClient(){

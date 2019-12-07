@@ -39,7 +39,7 @@ public class UserAccountServerManager {
         if (id != null) {
             if (this.getUserByID(id) == null) { //user not exists
                 String pwd = json.getString("password");
-                if (pwd != null && pwd.length() >= 6 && pwd.contains(" ")) { //ok
+                if (pwd != null && pwd.length() >= 6 && !pwd.contains(" ")) { //ok
                     UserAccount newUser = new UserAccount(id, pwd);
                     this.users.put(id, newUser);
                     this.saveUsers();

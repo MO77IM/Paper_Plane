@@ -3,6 +3,9 @@ package com.paperplane;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -94,20 +97,38 @@ public class RegistActivity extends AppCompatActivity implements View.OnClickLis
             editTextPWD1.requestFocus();
             return;
         }
+
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setMessage("正在注册...");
         pd.show();
-        //send sign up message
-        JSONObject json = new JSONObject();
-        json.put("userID", username);
-        json.put("password", pwd0);
-        json = UserAccountClientManager.getInstance().signup(json);
-        pd.dismiss();
-        if (json.getBoolean("result")) {
+
+        new Thread(new Runnable() {
+                @Override
+                public void run () {
+                    JSONObject json = new JSONObject();
+                    //send sign up message
+                    json.put("userID", username);
+                    json.put("password", pwd0);
+                    final JSONObject res = UserAccountClientManager.getInstance().signup(json);
+                    pd.dismiss();
+                    Looper.prepare();
+                    new Handler().post(new Runnable(){
+                        public void run(){
+                            solveRegisterResult(res);
+                        }
+                    });
+                    Looper.loop();
+                }
+            }
+        ).start();
+    }
+
+    private void solveRegisterResult(JSONObject res){
+        if (res.getBoolean("result")){
             Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-            this.returnEnter();
-        } else {
-            Toast.makeText(this, "server: " + json.getString("response"), Toast.LENGTH_SHORT).show();
+            returnEnter();
+        }else{
+            Toast.makeText(this, "server: " + res.getString("response"), Toast.LENGTH_SHORT).show();
         }
     }
 

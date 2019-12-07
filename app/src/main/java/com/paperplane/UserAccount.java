@@ -19,7 +19,7 @@ public class UserAccount {
         this.userID = userJSON.getString("userID");
         this.nickname = userJSON.getString("nickname");
         this.password = userJSON.getString("password");
-        this.icon = userJSON.getInteger("icon");
+        this.icon = userJSON.getIntValue("icon");
     }
     
     /** PUBLIC */

@@ -24,11 +24,15 @@ public class UserAccountClientManager {
      * post a signup request to the server
      */
     public JSONObject signup(JSONObject json){
+        System.out.println(1);
         json.put("MSGType", "SIGN_UP");
         SimpleClient client = new SimpleClient();
         if (client.isConnected()){
+            System.out.println(2);
             client.send(json.toJSONString());
+            System.out.println(3);
             json = JSONObject.parseObject(client.get());
+            System.out.println(4);
             client.close();
             return json;
         }

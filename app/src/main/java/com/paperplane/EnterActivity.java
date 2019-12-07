@@ -3,6 +3,8 @@ package com.paperplane;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +65,6 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
         currentUserName = editPersion.getText().toString().trim();  //获取用户名，去除空格
         currrentPassword = editCode.getText().toString().trim(); //获取密码
 
-
         if(TextUtils.isEmpty(currentUserName)){
             Toast.makeText(this, "账号不能为空", Toast.LENGTH_SHORT).show();
             return;
@@ -71,17 +72,33 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-
+/*
         final ProgressDialog pd = new ProgressDialog(EnterActivity.this);//等待
         pd.setMessage("正在登陆...");
         pd.show();//显示等待条
+*/
+        new Thread(new Runnable() {
+            @Override
+            public void run () {
+                //send login message
+                JSONObject json = new JSONObject();
+                json.put("userID", currentUserName);
+                json.put("password", currrentPassword);
+                //pd.dismiss();
+                final boolean result = UserAccountClientManager.getInstance().login(json);
+                Looper.prepare();
+                new Handler().post(new Runnable(){
+                    public void run(){
+                        solveLoginResult(result);
+                    }
+                });
+                Looper.loop();
+                solveLoginResult(result);
+            }
+        }).start();
+    }
 
-        //send login message
-        JSONObject json = new JSONObject();
-        json.put("userID", this.currentUserName);
-        json.put("password", this.currrentPassword);
-        pd.dismiss();
-        boolean result = UserAccountClientManager.getInstance().login(json);
+    private void solveLoginResult(boolean result){
         if (result){
             Intent intent = new Intent(EnterActivity.this,MainActivity.class);
             startActivity(intent);
@@ -91,3 +108,5 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 }
+
+
