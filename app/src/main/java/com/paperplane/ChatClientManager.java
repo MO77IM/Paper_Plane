@@ -54,16 +54,14 @@ public class ChatClientManager {
 
     public void startChat(UserAccount targetUser){
         PrivateChat privateChat = new PrivateChat(targetUser);
-        Log.d(TAG, "startChat: " + chatList.size());
-        chatList.add(privateChat);
-        Log.d(TAG, "startChat: "+new Boolean(chatListListener == null));
+        if(targetUser != null && getChatByUserId(targetUser.getUserID()) == null) {
+            chatList.add(privateChat);
+        }
         if(chatWindowListener!=null) {
             chatWindowListener.OnRefresh();
-            Log.d(TAG, "startChat: list refresh");
         }
         if(chatListListener!=null) {
             chatListListener.OnRefresh();
-            Log.d(TAG, "startChat: chat window refresh");
         }
     }
 

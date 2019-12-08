@@ -35,6 +35,7 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
             @Override
             public void run() {
                 while (true) {
+                    Log.d(TAG, "run: looping");
                     if (isStop) {
                         break;
                     }
@@ -53,7 +54,8 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                         client.send(json.toJSONString());
                         String msg = client.get();
                         if (msg != null) {
-                            publishProgress(msg);
+                            Log.d(TAG, "run: getMSG");
+                            listener.onReceived(msg);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
