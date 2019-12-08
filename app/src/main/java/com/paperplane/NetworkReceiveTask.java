@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
 
+import static android.support.constraint.Constraints.TAG;
+
 public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
 
     private NetworkListener listener;
@@ -64,6 +66,7 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onProgressUpdate(String... values){
+        Log.d(TAG, "onProgressUpdate: message received");
         String content = values[0];
         listener.onReceived(content);
     }

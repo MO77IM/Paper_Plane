@@ -50,19 +50,7 @@ public class MainActivity extends AppCompatActivity {
         startService(intent);
 
 
-        UserAccount drt = new UserAccount("134", "456");
-        drt.setNickname("drt");
-        UserAccount mza = new UserAccount("78979","drtnb");
-        mza.setNickname("mza");
-
         ChatClientManager chatClientManager = ChatClientManager.getInstance();
-        chatClientManager.startChat(drt);
-        chatClientManager.startChat(mza);
-
-        PrivateChat drtChat = chatClientManager.getChatByUser(drt);
-        if(drtChat != null){
-            drtChat.AddMessage(new ChatWindowMessage(drt.getIcon(), "你好", "", ChatWindowMessage.RECEIVE));
-        }
 
         Button button = (Button)findViewById(R.id.test_button);
         button.setOnClickListener(new View.OnClickListener() {

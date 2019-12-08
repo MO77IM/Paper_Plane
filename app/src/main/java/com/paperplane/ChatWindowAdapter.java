@@ -74,7 +74,7 @@ public class ChatWindowAdapter extends RecyclerView.Adapter<ChatWindowAdapter.Vi
         public void setData(Object object){
             PrivateChat privateChat = (PrivateChat)object;
             icon.setImageResource(privateChat.getTargetUser().getIcon());
-            name.setText(privateChat.getTargetUser().getNickname());
+            name.setText(privateChat.getTargetUser().getUserID());
             if(privateChat.getMessageSize()!=0)
                 text.setText(privateChat.getMessages().get(privateChat.getMessageSize()-1).getContent());
             else

@@ -28,24 +28,24 @@ public class NetworkService extends Service {
         @Override
         public void onReceived(String msg) {
             JSONObject loader = JSONObject.parseObject(msg);
-            String type = loader.getString("MSGType");
-            if(type!=null){
-                if(type.equals("SEND_TO")){//用户间发送消息
-                    PrivateChat privateChat = chatClientManager.getChatByUserId(loader.getString("userID"));
-                    if(privateChat == null){//当前聊天列表未创建与目标用户的聊天创建聊天窗口
-                        SimpleClient client = new SimpleClient();
-                        JSONObject json = new JSONObject();
-                        json.put("MSGType", "GET_USER");
-                        json.put("userID", loader.getString("userID"));
-                        client.send(json.toJSONString());
-                        String userStr = client.get();
-                        json = JSONObject.parseObject(userStr);
-                        UserAccount user = new UserAccount(json);
-                        chatClientManager.startChat(user);
-                        privateChat = chatClientManager.getChatByUser(user);
-                    }
-                    chatClientManager.receiveTextMessage(privateChat, loader.getString("message"));
+            for (int i = 0; i < loader.getIntValue("size"); i++) {
+
+                ChatMessage chatMessage = new ChatMessage(loader.getJSONObject("message" + i));
+
+                PrivateChat privateChat = chatClientManager.getChatByUserId(chatMessage.getSenderID());
+                if (privateChat == null) {//当前聊天列表未创建与目标用户的聊天创建聊天窗口
+                    SimpleClient client = new SimpleClient();
+                    JSONObject json = new JSONObject();
+                    json.put("MSGType", "GET_USER");
+                    json.put("userID", loader.getString("userID"));
+                    client.send(json.toJSONString());
+                    String userStr = client.get();
+                    json = JSONObject.parseObject(userStr);
+                    UserAccount user = new UserAccount(json);
+                    chatClientManager.startChat(user);
+                    privateChat = chatClientManager.getChatByUser(user);
                 }
+                chatClientManager.receiveTextMessage(privateChat, chatMessage.getMessage());
             }
         }
     };
@@ -60,7 +60,6 @@ public class NetworkService extends Service {
         chatClientManager = ChatClientManager.getInstance();
         networkReceiveTask = new NetworkReceiveTask(receiveListener);
         networkReceiveTask.executeOnExecutor(executors);
-        Log.d("NetworkService", "onCreate");
     }
 
     @Override
@@ -72,7 +71,6 @@ public class NetworkService extends Service {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        Log.d("NetworkService", "onDestroy");
     }
 
     @Override
@@ -83,18 +81,26 @@ public class NetworkService extends Service {
 
     class NetworkBinder extends Binder{
 
-        private String res;
+        private String res = null;
 
-        public String SendMessage(String msg){
-            NetworkListener listener = new NetworkListener() {
-                @Override
-                public void onReceived(String content) {
-                    res = content;
-                }
-            };
+        public void SendMessage(String msg, NetworkListener listener){
             Log.d(TAG, "SendMessage: "+res);
             NetworkSendTask networkSendTask = new NetworkSendTask(listener);
             networkSendTask.execute(msg);
+        }
+
+        public void SendMessage(String msg){
+            NetworkListener listener = new NetworkListener() {
+                @Override
+                public void onReceived(String content) {
+
+                }
+            };
+            NetworkSendTask networkSendTask = new NetworkSendTask(listener);
+            networkSendTask.execute(msg);
+        }
+
+        public String getRes(){
             return res;
         }
     }

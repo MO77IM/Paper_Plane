@@ -67,35 +67,37 @@ public class ChatListWindow extends AppCompatActivity {
         addChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userId = userIdInput.getText().toString();
-                JSONObject json = new JSONObject();
+                final String userId = userIdInput.getText().toString();
+                final JSONObject json = new JSONObject();
                 json.put("MSGType", "GET_USER");
                 json.put("userID", userId);
-                Log.d("ChatListWindow",new Boolean(networkBinder==null).toString());
-                String userJson = networkBinder.SendMessage(json.toJSONString());
-                if(userJson == null){
-                    Toast.makeText(ChatListWindow.this,"未找到用户", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    json = JSONObject.parseObject(userJson);
-                    UserAccount user = new UserAccount(json);
-                    if(chatClientManager.getChatByUser(user) == null) {
-                        chatClientManager.startChat(user);
+                NetworkListener listener = new NetworkListener() {
+                    @Override
+                    public void onReceived(String content) {
+                        if(content == null){
+                            Toast.makeText(ChatListWindow.this,"未找到用户", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            JSONObject userJson = JSONObject.parseObject(content);
+                            if(chatClientManager.getChatByUserId(userId) == null) {
+                                chatClientManager.startChat(new UserAccount(userJson));
+                            }
+                        }
                     }
-                }
+                };
+
+                networkBinder.SendMessage(json.toJSONString(), listener);
+
             }
         });
 
-        listener = new ChatListener() {
+        chatClientManager.setChatListListener(new ChatListener() {
             @Override
             public void OnRefresh() {
                 adapter.notifyDataSetChanged();
                 adapter.notifyItemInserted(chatClientManager.getChatSize() - 1);
-                recyclerView.scrollToPosition(chatClientManager.getChatSize() - 1);
             }
-        };
-
-        chatClientManager.setChatListListener(listener);
+        });
     }
 
     @Override
@@ -103,6 +105,10 @@ public class ChatListWindow extends AppCompatActivity {
         super.onStart();
         adapter.notifyDataSetChanged();
         adapter.notifyItemInserted(chatClientManager.getChatSize() - 1);
-        recyclerView.scrollToPosition(chatClientManager.getChatSize() - 1);
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+        unbindService(connection);
     }
 }

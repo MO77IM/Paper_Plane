@@ -28,7 +28,7 @@ public class ChatClientManager {
         this.chatWindowListener = chatWindowListener;
     }
 
-    public void setChatListListener(ChatListener chatListContext) {
+    public void setChatListListener(ChatListener chatListListener) {
         this.chatListListener = chatListListener;
     }
 
@@ -56,10 +56,15 @@ public class ChatClientManager {
         PrivateChat privateChat = new PrivateChat(targetUser);
         Log.d(TAG, "startChat: " + chatList.size());
         chatList.add(privateChat);
-        if(chatWindowListener!=null)
+        Log.d(TAG, "startChat: "+new Boolean(chatListListener == null));
+        if(chatWindowListener!=null) {
             chatWindowListener.OnRefresh();
-        if(chatListListener!=null)
+            Log.d(TAG, "startChat: list refresh");
+        }
+        if(chatListListener!=null) {
             chatListListener.OnRefresh();
+            Log.d(TAG, "startChat: chat window refresh");
+        }
     }
 
     public void delChat(PrivateChat privateChat){
@@ -85,7 +90,7 @@ public class ChatClientManager {
 
     public PrivateChat getChatByUserId(String id){
         for(PrivateChat chat: chatList){
-            if(chat.getTargetUser().getUserID().equals(id));
+            if(chat.getTargetUser().getUserID() == (id));
                 return chat;
         }
         return null;

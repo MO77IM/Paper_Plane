@@ -89,6 +89,12 @@ public class ChatWindow extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart(){
+        super.onStart();
+        chatClientManager.setChatWindowListener(listener);
+    }
+
+    @Override
     protected void onDestroy(){
         super.onDestroy();
         unbindService(connection);
