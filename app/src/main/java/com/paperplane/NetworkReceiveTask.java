@@ -20,7 +20,6 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
     public NetworkReceiveTask(NetworkListener listener){
         super();
         this.listener = listener;
-
         chatClientManager = ChatClientManager.getInstance();
     }
 
@@ -31,6 +30,9 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params){
+        if (isStop){
+            return true;
+        }
         new Thread(new Runnable(){
             @Override
             public void run() {
@@ -39,12 +41,15 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                     if (isStop) {
                         break;
                     }
-
+                    if (isCancelled()){
+                        break;
+                    }
                     //接收代码
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        break;
                     }
                     client = new SimpleClient();
                     try {
@@ -52,8 +57,10 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                         json.put("MSGType", "ASK_MESSAGE");
                         json.put("userID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
                         client.send(json.toJSONString());
+                        SimpleClient.currentAskingClient = client;
                         Log.d(TAG, "run: ask sent");
                         String msg = client.get();
+                        SimpleClient.currentAskingClient = null;
                         Log.d(TAG, "run: "+new Boolean(msg==null));
                         if (msg != null) {
                             Log.d(TAG, "run: getMSG");
@@ -61,6 +68,7 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        break;
                     }
                 }
             }
@@ -70,6 +78,9 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
 
     @Override
     protected void onProgressUpdate(String... values){
+        if (this.isStop){
+            return;
+        }
         Log.d(TAG, "onProgressUpdate: message received");
         String content = values[0];
         listener.onReceived(content);

@@ -90,7 +90,7 @@ public class NetworkService extends Service {
                             SimpleClient client = new SimpleClient();
                             JSONObject json = new JSONObject();
                             json.put("MSGType", "GET_USER");
-                            json.put("userID", loader.getString("senderID"));
+                            json.put("userID", chatMessage.getSenderID());
                             client.send(json.toJSONString());
                             userStr = client.get();
                             bundle = new Bundle();
@@ -130,14 +130,24 @@ public class NetworkService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public void stopReceiveService(){
+        if (networkReceiveTask != null){
+            networkReceiveTask.StopNetwork();
+            networkReceiveTask.cancel(true);
+        }
     }
 
     @Override
     public void onDestroy(){
+        System.out.println("stopping receiving");
+        stopReceiveService();
         super.onDestroy();
     }
+
+
 
     @Override
     public IBinder onBind(Intent intent) {

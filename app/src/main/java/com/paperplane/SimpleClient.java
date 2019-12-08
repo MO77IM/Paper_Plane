@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class SimpleClient extends Thread{
+public class SimpleClient extends Thread{;
+    public static SimpleClient currentAskingClient = null;
+
     static final String SERVER_IP = "47.103.198.96"; //47.103.198.96
     static final int SERVER_PORT = 3000; // 3000
 
@@ -77,7 +79,9 @@ public class SimpleClient extends Thread{
         try{
             if (this.input != null){
                 this.input.readByte(); //confirm byte
-                return this.input.readUTF();
+                String res = this.input.readUTF();
+                this.close();
+                return res;
             }else{
                 return null;
             }
