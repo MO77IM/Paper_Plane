@@ -1,9 +1,6 @@
 package com.paperplane;
 
-<<<<<<< Updated upstream
 import android.Manifest;
-=======
->>>>>>> Stashed changes
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,9 +17,9 @@ public class MainActivity extends Activity {
      * 列表
      */
     private FriendListView explistview;
-    private String[][] childernDate=new String[10][10];
-    private String[] groupDate=new String[10];
-    private int expendFlag=-1;
+    private String[][] childrenData=new String[10][10];
+    private String[] groupData=new String[10];
+    private int expandFlag=-1;
     private FriendHeaderAdapter adapter;
     /**
      * 测试用的活动
@@ -122,10 +119,6 @@ public class MainActivity extends Activity {
     }
 
     /**
-<<<<<<< Updated upstream
-     *
-=======
->>>>>>> Stashed changes
      * 初始化view
      */
     private void initView(){
