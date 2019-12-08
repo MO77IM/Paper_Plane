@@ -1,6 +1,9 @@
 package com.paperplane;
 
+<<<<<<< Updated upstream
 import android.Manifest;
+=======
+>>>>>>> Stashed changes
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -119,7 +122,10 @@ public class MainActivity extends Activity {
     }
 
     /**
+<<<<<<< Updated upstream
      *
+=======
+>>>>>>> Stashed changes
      * 初始化view
      */
     private void initView(){
