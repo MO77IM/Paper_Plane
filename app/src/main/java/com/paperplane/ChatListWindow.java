@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,8 +76,13 @@ public class ChatListWindow extends AppCompatActivity {
                     Toast.makeText(ChatListWindow.this,"未找到用户", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                json = JSONObject.parseObject(userJson);
-                chatClientManager.startChat(new UserAccount(json));
+                else {
+                    json = JSONObject.parseObject(userJson);
+                    UserAccount user = new UserAccount(json);
+                    if(chatClientManager.getChatByUser(user) == null) {
+                        chatClientManager.startChat(user);
+                    }
+                }
             }
         });
 

@@ -1,9 +1,12 @@
 package com.paperplane;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Queue;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class NetworkSendTask extends AsyncTask<String, Void, String> {
     private NetworkListener listener;
@@ -19,10 +22,12 @@ public class NetworkSendTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute(){
+        Log.d("NetworkSend","preExecute");
     }
 
     @Override
     protected String doInBackground(String... params){
+        Log.d("NetworkSend","Sending");
         String sendMessage = params[0];
         client = new SimpleClient();
         client.send(sendMessage);
@@ -37,6 +42,7 @@ public class NetworkSendTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result){
+        Log.d(TAG, "onPostExecute: end");
         listener.onReceived(result);
     }
 }
