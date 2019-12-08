@@ -36,7 +36,7 @@ public class ChatListWindow extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             networkBinder = (NetworkService.NetworkBinder) iBinder;
-            //chatClientManager.setNetworkBinder(networkBinder);
+            chatClientManager.setNetworkBinder(networkBinder);
         }
 
         @Override

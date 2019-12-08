@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
 
-
         ChatClientManager chatClientManager = ChatClientManager.getInstance();
 
         Button button = (Button)findViewById(R.id.test_button);

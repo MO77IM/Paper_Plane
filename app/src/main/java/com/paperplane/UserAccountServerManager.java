@@ -44,21 +44,25 @@ public class UserAccountServerManager {
         res.put("result", false);
         String id = json.getString("userID");
         if (id != null) {
-            if (this.getUserByID(id) == null) { //user not exists
-                String pwd = json.getString("password");
-                if (pwd != null && pwd.length() >= 6 && !pwd.contains(" ")) { //ok
-                    UserAccount newUser = new UserAccount(id, pwd);
-                    this.users.put(id, newUser);
-                    this.saveUsers();
-                    res.put("result", true);
+            if (id.length() >= 4 && id.length() <= 16 && !id.contains(" ")){ //legal id
+                if (this.getUserByID(id) == null) { //user not exists
+                    String pwd = json.getString("password");
+                    if (pwd != null && pwd.length() >= 6 && pwd.length() <= 16 && !pwd.contains(" ")) { //ok
+                        UserAccount newUser = new UserAccount(id, pwd);
+                        this.users.put(id, newUser);
+                        this.saveUsers();
+                        res.put("result", true);
+                    }else{
+                        res.put("response", "illegal password");
+                    }
                 }else{
-                    res.put("response", "illegal password");
+                    res.put("response", "user already exists");
                 }
             }else{
-                res.put("response", "user exists");
+                res.put("response", "illegal id");
             }
         }else{
-            res.put("response", "userID no found");
+            res.put("response", "no user id input");
         }
         return res.toJSONString();
     }
