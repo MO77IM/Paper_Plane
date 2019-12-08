@@ -90,7 +90,7 @@ public class NetworkService extends Service {
                             SimpleClient client = new SimpleClient();
                             JSONObject json = new JSONObject();
                             json.put("MSGType", "GET_USER");
-                            json.put("userID", loader.getString("userID"));
+                            json.put("userID", loader.getString("senderID"));
                             client.send(json.toJSONString());
                             userStr = client.get();
                             bundle = new Bundle();

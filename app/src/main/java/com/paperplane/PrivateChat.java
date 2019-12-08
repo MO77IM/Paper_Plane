@@ -23,7 +23,6 @@ public class PrivateChat {
         this.targetUser = targetUser;
         isGetMessage = false;
         messages = new ArrayList<ChatWindowMessage>();
-        targetUser = targetUser;
     }
 
     public UserAccount getTargetUser() {
