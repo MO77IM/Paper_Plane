@@ -37,10 +37,9 @@
             android:name=".ChatWindow"
 
             android:label="Chat"></activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".RegistActivity"/>
+        <activity android:name=".FriendListView"/>
 
     </application>
 

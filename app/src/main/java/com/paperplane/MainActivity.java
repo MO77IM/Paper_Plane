@@ -3,19 +3,19 @@ package com.paperplane;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
+    /**
+     * 列表
+     */
     private FriendListView explistview;
     private String[][] childernDate=new String[10][10];
     private String[] groupDate=new String[10];
@@ -91,7 +91,26 @@ public class MainActivity extends Activity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    /**
+     * 数据初始化
+     */
     private void initData() {
+        for(int i=0;i<10;i++){
+            groupData[i] ="fenzu"+i;
+        }
+
+        for(int i=0;i<10;i++){
+            for(int j=0;j<10;j++){
+                childrenData[i][j] = "haoyou"+i+-+j;
+            }
+        }
+        //设置悬浮头部VIEW
+        explistview.setHeaderView(getLayoutInflater().inflate(R.layout.friend_list_ghead, explistview, false));
+        adapter = new FriendHeaderAdapter(childrenData, groupData, getApplicationContext(),explistview);
+        explistview.setAdapter(adapter);
+
+        //设置单个分组展开
+        //explistview.setOnGroupClickListener(new GroupClickListener());
     }
 
     @Override
@@ -101,9 +120,34 @@ public class MainActivity extends Activity {
 
     /**
      *
+     * 初始化view
      */
     private void initView(){
-
+        explistview=  findViewById(R.id.explistview);
     }
 
+    class GroupClickListener implements ExpandableListView.OnGroupClickListener{
+
+        @Override
+        public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+            if (expandFlag == -1) {
+                // 展开被选的group
+                explistview.expandGroup(groupPosition);
+                // 设置被选中的group置于顶端
+                explistview.setSelectedGroup(groupPosition);
+                expandFlag = groupPosition;
+            } else if (expandFlag == groupPosition) {
+                explistview.collapseGroup(expandFlag);
+                expandFlag = -1;
+            } else {
+                explistview.collapseGroup(expandFlag);
+                // 展开被选的group
+                explistview.expandGroup(groupPosition);
+                // 设置被选中的group置于顶端
+                explistview.setSelectedGroup(groupPosition);
+                expandFlag = groupPosition;
+            }
+            return true;
+        }
+    }
 }
