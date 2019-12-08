@@ -84,6 +84,14 @@ public class RegistActivity extends AppCompatActivity implements View.OnClickLis
             Toast.makeText(this, "未输入用户名", Toast.LENGTH_SHORT).show();
             editTextP.requestFocus();
             return;
+        } else if (username.length() < 4) {
+            Toast.makeText(this, "用户名过短", Toast.LENGTH_SHORT).show();
+            editTextP.requestFocus();
+            return;
+        }else if (username.contains(" ")) {
+            Toast.makeText(this, "用户名不可带有空格", Toast.LENGTH_SHORT).show();
+            editTextP.requestFocus();
+            return;
         } else if (TextUtils.isEmpty(pwd0)) {
             Toast.makeText(this, "未设置密码", Toast.LENGTH_SHORT).show();
             editTextPWD0.requestFocus();

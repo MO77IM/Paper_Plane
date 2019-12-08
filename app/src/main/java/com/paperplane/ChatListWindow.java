@@ -35,7 +35,7 @@ public class ChatListWindow extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             networkBinder = (NetworkService.NetworkBinder) iBinder;
-            //chatClientManager.setNetworkBinder(networkBinder);
+            chatClientManager.setNetworkBinder(networkBinder);
         }
 
         @Override
@@ -69,10 +69,11 @@ public class ChatListWindow extends AppCompatActivity {
                 String userId = userIdInput.getText().toString();
                 JSONObject json = new JSONObject();
                 json.put("MSGType", "GET_USER");
-                json.put("userId", userId);
+                json.put("userID", userId);
                 String userJson = networkBinder.SendMessage(json.toJSONString());
                 if(userJson == null){
                     Toast.makeText(ChatListWindow.this,"未找到用户", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 json = JSONObject.parseObject(userJson);
                 chatClientManager.startChat(new UserAccount(json));

@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
 
-
         UserAccount drt = new UserAccount("134", "456");
         drt.setNickname("drt");
         UserAccount mza = new UserAccount("78979","drtnb");
