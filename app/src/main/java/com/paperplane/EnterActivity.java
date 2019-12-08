@@ -72,11 +72,11 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this, "密码不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-/*
+
         final ProgressDialog pd = new ProgressDialog(EnterActivity.this);//等待
         pd.setMessage("正在登陆...");
         pd.show();//显示等待条
-*/
+
         new Thread(new Runnable() {
             @Override
             public void run () {
@@ -84,7 +84,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                 JSONObject json = new JSONObject();
                 json.put("userID", currentUserName);
                 json.put("password", currrentPassword);
-                //pd.dismiss();
+                pd.dismiss();
                 final boolean result = UserAccountClientManager.getInstance().login(json);
                 Looper.prepare();
                 new Handler().post(new Runnable(){
@@ -93,7 +93,6 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
                 Looper.loop();
-                solveLoginResult(result);
             }
         }).start();
     }

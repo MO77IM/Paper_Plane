@@ -50,32 +50,19 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-/**
- * 初始化
- */
-        initView();
-        initData();
+        /**
+         * 初始化
+         *//*
+        this.initView();
+        this.initData();*/
 
-/**
- * 启动网络服务
- */
+        /**
+         * 启动网络服务
+         */
         Intent intent = new Intent(this, NetworkService.class);
         startService(intent);
 
-
-        UserAccount drt = new UserAccount("134", "456");
-        drt.setNickname("drt");
-        UserAccount mza = new UserAccount("78979","drtnb");
-        mza.setNickname("mza");
-
         ChatClientManager chatClientManager = ChatClientManager.getInstance();
-        chatClientManager.startChat(drt);
-        chatClientManager.startChat(mza);
-
-        PrivateChat drtChat = chatClientManager.getChatByUser(drt);
-        if(drtChat != null){
-            drtChat.AddMessage(new ChatWindowMessage(drt.getIcon(), "你好", "", ChatWindowMessage.RECEIVE));
-        }
 
         Button button = (Button)findViewById(R.id.test_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -105,9 +92,9 @@ public class MainActivity extends Activity {
             }
         }
         //设置悬浮头部VIEW
-        explistview.setHeaderView(getLayoutInflater().inflate(R.layout.friend_list_ghead, explistview, false));
+        this.explistview.setHeaderView(getLayoutInflater().inflate(R.layout.friend_list_ghead, explistview, false));
         adapter = new FriendHeaderAdapter(childrenData, groupData, getApplicationContext(),explistview);
-        explistview.setAdapter(adapter);
+        this.explistview.setAdapter(adapter);
 
         //设置单个分组展开
         //explistview.setOnGroupClickListener(new GroupClickListener());
@@ -122,9 +109,9 @@ public class MainActivity extends Activity {
      * 初始化view
      */
     private void initView(){
-        explistview=  findViewById(R.id.explistview);
+        this.explistview = findViewById(R.id.explistview);
     }
-
+/*
     class GroupClickListener implements ExpandableListView.OnGroupClickListener{
 
         @Override
@@ -149,4 +136,5 @@ public class MainActivity extends Activity {
             return true;
         }
     }
+    */
 }
