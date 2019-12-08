@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
         if (SimpleClient.currentAskingClient != null){ //close ask_message socket connection
             stopService(this.networkIntent);
             SimpleClient.currentAskingClient.close();
+            System.out.println("asking client closed");
         }
         super.onDestroy();
     }

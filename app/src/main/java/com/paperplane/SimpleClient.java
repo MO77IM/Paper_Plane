@@ -93,12 +93,8 @@ public class SimpleClient extends Thread{;
 
     public void close(){
         try{
-            if (this.input != null){
-                this.input.close();
-            }
-            if (this.output != null){
-                this.output.close();
-            }
+            clientSocket.shutdownInput();
+            clientSocket.shutdownOutput();
             if (this.clientSocket != null){
                 this.clientSocket.close();
             }

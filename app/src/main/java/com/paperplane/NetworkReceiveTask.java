@@ -48,6 +48,9 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
+                        if (client != null){
+                            client.close();
+                        }
                         e.printStackTrace();
                         break;
                     }
@@ -60,6 +63,7 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                         SimpleClient.currentAskingClient = client;
                         Log.d(TAG, "run: ask sent");
                         String msg = client.get();
+                        Log.d(TAG, "run: ask get");
                         SimpleClient.currentAskingClient = null;
                         Log.d(TAG, "run: "+new Boolean(msg==null));
                         if (msg != null) {
@@ -67,6 +71,9 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                             listener.onReceived(msg);
                         }
                     } catch (Exception e) {
+                        if (client != null){
+                            client.close();
+                        }
                         e.printStackTrace();
                         break;
                     }
