@@ -52,7 +52,9 @@ public class NetworkReceiveTask extends AsyncTask<Void, String, Boolean> {
                         json.put("MSGType", "ASK_MESSAGE");
                         json.put("userID", UserAccountClientManager.getInstance().getCurrentUser().getUserID());
                         client.send(json.toJSONString());
+                        Log.d(TAG, "run: ask sent");
                         String msg = client.get();
+                        Log.d(TAG, "run: "+new Boolean(msg==null));
                         if (msg != null) {
                             Log.d(TAG, "run: getMSG");
                             listener.onReceived(msg);

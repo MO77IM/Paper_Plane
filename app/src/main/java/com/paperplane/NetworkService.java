@@ -55,11 +55,12 @@ public class NetworkService extends Service {
                     startChat(user, chatMessage);
                     break;
                 case EXIST_CHAT_RECEIVE:
+                    Log.d(TAG, "handleMessage: send message in existing window");
                     bundle = message.getData();
                     msgStr = bundle.getString("chatMessage");
                     chatMessage = new ChatMessage(JSONObject.parseObject(msgStr));
                     PrivateChat privateChat = chatClientManager.getChatByUserId(chatMessage.getSenderID());
-                    privateChat.ReceiveTextMessage(chatMessage.getMessage());
+                    chatClientManager.receiveTextMessage(privateChat, chatMessage.getMessage());
                     break;
                     default:
                         break;
@@ -83,6 +84,7 @@ public class NetworkService extends Service {
                     for (int i = 0; i < loader.getIntValue("size"); i++) {
                         Log.d(TAG, "run: in message process looping");
                         ChatMessage chatMessage = new ChatMessage(loader.getJSONObject("message" + i));
+                        Log.d(TAG, "run: "+ JSONObject.toJSONString(chatMessage));
                         privateChat = chatClientManager.getChatByUserId(chatMessage.getSenderID());
                         if (privateChat == null) {//当前聊天列表未创建与目标用户的聊天创建聊天窗口
                             SimpleClient client = new SimpleClient();
@@ -100,6 +102,7 @@ public class NetworkService extends Service {
                             handler.sendMessage(hMessage);
                         }
                         else{
+                            Log.d(TAG, "run: chat window found");
                             bundle = new Bundle();
                             hMessage = new Message();
                             bundle.putString("chatMessage", JSONObject.toJSONString(chatMessage));

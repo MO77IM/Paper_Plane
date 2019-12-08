@@ -1,6 +1,10 @@
 package com.paperplane;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class PrivateChat {
     private boolean isGetMessage;
@@ -20,10 +24,6 @@ public class PrivateChat {
         isGetMessage = false;
         messages = new ArrayList<ChatWindowMessage>();
         targetUser = targetUser;
-    }
-
-    public boolean isGetMessage() {
-        return isGetMessage;
     }
 
     public UserAccount getTargetUser() {
@@ -46,6 +46,7 @@ public class PrivateChat {
     public void ReceiveTextMessage(String content){
         ChatWindowMessage msg = new ChatWindowMessage(R.mipmap.ic_launcher, content, "", ChatWindowMessage.RECEIVE); //之后改为本地用户的头像
         this.AddMessage(msg);
+        Log.d(TAG, "ReceiveTextMessage: "+messages.size());
     }
 
     public int getMessageSize(){
