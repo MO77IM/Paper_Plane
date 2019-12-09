@@ -13,11 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".NetworkService"
+            android:name=".Network.NetworkService"
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".ChatListWindow">
+        <activity android:name=".Activity.ChatListWindow">
             <intent-filter>
                 <action android:name="com.paperplane.START_CHAT_WINDOW" />
 
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".EnterActivity"
+            android:name=".Activity.EnterActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,12 +34,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatWindow"
+            android:name=".Activity.ChatWindow"
 
             android:label="Chat"></activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".RegistActivity"/>
-        <activity android:name=".FriendListView"/>
+        <activity android:name=".Activity.MainActivity"/>
+        <activity android:name=".Activity.RegistActivity"/>
+        <activity android:name=".Data.FriendListView"/>
 
     </application>
 

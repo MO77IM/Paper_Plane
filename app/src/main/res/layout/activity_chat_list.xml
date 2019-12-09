@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#EEEEEE"
     android:orientation="vertical"
-    tools:content="com.paperplane.ChatListWindow">
+    tools:content="com.paperplane.Activity.ChatListWindow">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/chat_list_view"

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#EEEEEE"
     android:orientation="vertical"
-    tools:context="com.paperplane.ChatWindow"
+    tools:context="com.paperplane.Activity.ChatWindow"
     >
 
     <android.support.v7.widget.RecyclerView
