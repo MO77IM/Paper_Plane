@@ -51,6 +51,7 @@ public class NetworkService extends Service {
                     String usrStr = bundle.getString("user");
                     msgStr = bundle.getString("chatMessage");
                     UserAccount user = new UserAccount(JSONObject.parseObject(usrStr));
+                    Log.d(TAG, "handleMessage: " + JSONObject.toJSONString(user));
                     chatMessage = new ChatMessage(JSONObject.parseObject(msgStr));
                     startChat(user, chatMessage);
                     break;
@@ -78,11 +79,11 @@ public class NetworkService extends Service {
                 public void run() {
                     Log.d(TAG, "run: Thread running");
                     JSONObject loader = JSONObject.parseObject(message);
-                    String userStr = null;
+                    String userStr;
                     Bundle bundle;
                     Message hMessage;
                     for (int i = 0; i < loader.getIntValue("size"); i++) {
-                        Log.d(TAG, "run: in message process looping");
+                        Log.d(TAG, message);
                         ChatMessage chatMessage = new ChatMessage(loader.getJSONObject("message" + i));
                         Log.d(TAG, "run: "+ JSONObject.toJSONString(chatMessage));
                         privateChat = chatClientManager.getChatByUserId(chatMessage.getSenderID());
