@@ -78,7 +78,7 @@ public class SimpleServer implements Runnable{
                     if (type != null){
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
-                            Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
+                            Thread pushThread = new Thread(new PushMessageDelegate(server, loader));
                             pushThread.start();
                             break;
                         }else if (type.equals("SEND_TO")){
@@ -96,6 +96,7 @@ public class SimpleServer implements Runnable{
                             res = "Hello from server " + server.getLocalSocketAddress();
                         }
                         output.writeByte(0); //confirm byte
+                        input.readByte();
                         output.writeUTF(res);
                     }
                     server.close();
