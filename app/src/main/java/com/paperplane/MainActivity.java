@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
     private String[] groupData=new String[10];
     private int expandFlag=-1;
     private FriendHeaderAdapter adapter;
+    private Intent networkIntent = null;
     /**
      * 测试用的活动
       */
@@ -47,20 +48,33 @@ public class MainActivity extends Activity {
     };
 
     @Override
+    protected void onDestroy(){
+        System.out.println("stopping");
+        if (SimpleClient.currentAskingClient != null){ //close ask_message socket connection
+            stopService(this.networkIntent);
+            SimpleClient.currentAskingClient.close();
+            System.out.println("asking client closed");
+        }
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         /**
          * 初始化
-         *//*
+         */
+        /*
         this.initView();
-        this.initData();*/
+        this.initData();
+        */
 
         /**
          * 启动网络服务
          */
-        Intent intent = new Intent(this, NetworkService.class);
-        startService(intent);
+        this.networkIntent = new Intent(this, NetworkService.class);
+        startService(networkIntent);
 
         ChatClientManager chatClientManager = ChatClientManager.getInstance();
 
