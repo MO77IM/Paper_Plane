@@ -1,9 +1,16 @@
 package com.drttest;
 
-import java.util.*;
-import java.net.*;
-import java.io.*;
-import com.alibaba.fastjson.*;
+import com.alibaba.fastjson.JSONObject;
+import com.paperplane.ChatServerManager;
+import com.paperplane.Logger;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 /**
  * @Author
@@ -12,10 +19,15 @@ import com.alibaba.fastjson.*;
  * created to wait and push message for server
  */
 public class PushMessageDelegate implements Runnable{
-    public PushMessageDelegate(Socket server, DataOutputStream output, JSONObject json){
+    public PushMessageDelegate(Socket server, JSONObject json){
         this.server = server;
-        this.output = output;
         this.message = json;
+        try{
+            this.input = new DataInputStream(server.getInputStream());
+            this.output = new DataOutputStream(server.getOutputStream());
+        }catch(IOException ioe){
+            ioe.printStackTrace();
+        }
     }
     /**
      * PUBLIC
@@ -33,13 +45,20 @@ public class PushMessageDelegate implements Runnable{
                 if (!server.isClosed()){
                     //check if the user is still connecting
                     this.output.writeByte(0); //confirm byte
+                    server.setSoTimeout(5000); //wait for response
+                    this.input.readByte();
+
                     this.output.writeUTF(ChatServerManager.getInstance().getOfflineChatMessage(id));
                     Logger.log("offline messages sent to " + id);
                 }else{
                     Logger.log("user " + id + "closed the connection");
                 }
             }catch(SocketException se){
-                Logger.log("failed to send offline messages to \'" + id + "\' because of bad connection");
+                Logger.log("SocketException: user \'" + id + "\' offline, stop sending messages");
+            }catch(SocketTimeoutException ste){
+                Logger.log("TimeoutException: user \'" + id + "\' offline, stop sending messages");
+            }catch(EOFException eofe){
+                Logger.log("EOFException: user \'" + id + "\' is offline, stop sending messages");
             }
             this.output.close();
             this.server.close();
@@ -56,5 +75,6 @@ public class PushMessageDelegate implements Runnable{
      */
     private Socket server;
     private DataOutputStream output;
+    private DataInputStream input;
     private JSONObject message;
 }

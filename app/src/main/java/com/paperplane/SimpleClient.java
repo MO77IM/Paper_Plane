@@ -79,6 +79,7 @@ public class SimpleClient extends Thread{;
         try{
             if (this.input != null){
                 this.input.readByte(); //confirm byte
+                this.output.writeByte(0); //response byte
                 String res = this.input.readUTF();
                 this.close();
                 return res;
@@ -93,8 +94,10 @@ public class SimpleClient extends Thread{;
 
     public void close(){
         try{
-            clientSocket.shutdownInput();
-            clientSocket.shutdownOutput();
+            if (this.input != null){
+                clientSocket.shutdownInput();
+                clientSocket.shutdownOutput();
+            }
             if (this.clientSocket != null){
                 this.clientSocket.close();
             }

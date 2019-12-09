@@ -44,14 +44,14 @@ public class UserAccountClientManager {
      * @Description
      * try to post a login request to the server
      */
-    public boolean login(JSONObject json){
+    public boolean login(JSONObject json) {
         json.put("MSGType", "LOGIN");
 
         SimpleClient client = new SimpleClient();
-        if (client.isConnected()){
+        if (client.isConnected()) {
             client.send(json.toJSONString());
             json = JSONObject.parseObject(client.get());
-            if (json.getString("userID") != null){
+            if (json.getString("userID") != null) {
                 this.user = new UserAccount(json);
                 client.close();
                 return true;

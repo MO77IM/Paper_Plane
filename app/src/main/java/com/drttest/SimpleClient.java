@@ -1,12 +1,17 @@
-//powered by SCUDRT
-package com.drttest;
-import java.util.*;
-import java.net.*;
-import java.io.*;
-import com.alibaba.fastjson.*;
+package com.drttest;//powered by SCUDRT
 
-public class SimpleClient extends Thread{
-    static final String SERVER_IP = "127.0.0.1"; // "47.103.198.96";
+import com.paperplane.ClientObserver;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class SimpleClient extends Thread{;
+    public static SimpleClient currentAskingClient = null;
+
+    static final String SERVER_IP = "47.103.198.96"; //47.103.198.96
     static final int SERVER_PORT = 3000; // 3000
 
     public SimpleClient(){
@@ -76,7 +81,10 @@ public class SimpleClient extends Thread{
         try{
             if (this.input != null){
                 this.input.readByte(); //confirm byte
-                return this.input.readUTF();
+                this.output.writeByte(0); //response byte
+                String res = this.input.readUTF();
+                this.close();
+                return res;
             }else{
                 return null;
             }
@@ -88,12 +96,8 @@ public class SimpleClient extends Thread{
 
     public void close(){
         try{
-            if (this.input != null){
-                this.input.close();
-            }
-            if (this.output != null){
-                this.output.close();
-            }
+            clientSocket.shutdownInput();
+            clientSocket.shutdownOutput();
             if (this.clientSocket != null){
                 this.clientSocket.close();
             }

@@ -1,9 +1,17 @@
 //powered by SCUDRT
 package com.drttest;
-import java.util.*;
-import java.net.*;
-import java.io.*;
-import com.alibaba.fastjson.*;
+
+import com.alibaba.fastjson.JSONObject;
+import com.paperplane.ChatServerManager;
+import com.paperplane.Logger;
+import com.paperplane.UserAccountServerManager;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 
 /**
     usage:
@@ -54,7 +62,7 @@ public class SimpleServer implements Runnable{
                     server = this.serverSocket.accept();
                     input = new DataInputStream(server.getInputStream());
                     output = new DataOutputStream(server.getOutputStream());
-                    
+
                     //convert input message to JSON
                     res = input.readUTF();
                     loader = JSONObject.parseObject(res);
@@ -70,7 +78,7 @@ public class SimpleServer implements Runnable{
                     if (type != null){
                         // check the message type
                         if (type.equals("ASK_MESSAGE")){ //request for new messages
-                            Thread pushThread = new Thread(new PushMessageDelegate(server, output, loader));
+                            Thread pushThread = new Thread(new PushMessageDelegate(server, loader));
                             pushThread.start();
                             break;
                         }else if (type.equals("SEND_TO")){
@@ -87,7 +95,10 @@ public class SimpleServer implements Runnable{
                         }else if (type.equals("PING")) {
                             res = "Hello from server " + server.getLocalSocketAddress();
                         }
-                        output.writeByte(0); //confirm byte
+                        //check if the client is alive
+                        output.writeByte(0); //send confirm byte
+                        input.readByte(); //get response byte
+                        //send response
                         output.writeUTF(res);
                     }
                     server.close();
