@@ -8,6 +8,32 @@
     tools:context="com.paperplane.Activity.ChatWindow"
     >
 
+    <LinearLayout
+        style="@style/top_nav">
+        <ImageView
+            android:id="@+id/iv_return"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:src="@drawable/ico_commen_back"></ImageView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:id="@+id/window_user_name"
+            android:text="333"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="注册"
+            android:textColor="#404040"
+            android:textSize="14sp" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/message_list_view"
         android:layout_width="match_parent"

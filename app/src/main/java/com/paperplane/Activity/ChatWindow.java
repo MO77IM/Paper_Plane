@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.paperplane.Adapter.ChatAdapter;
 import com.paperplane.Manager.ChatClientManager;
@@ -27,6 +28,8 @@ public class ChatWindow extends AppCompatActivity {
     RecyclerView recyclerView;
     ChatAdapter adapter;
     LinearLayoutManager layoutManager;
+
+    TextView windowUserNmae;
 
     private ChatListener listener;
 
@@ -55,6 +58,7 @@ public class ChatWindow extends AppCompatActivity {
         final Intent intent = getIntent();
         privateChat = chatClientManager.getChatByPosition(intent.getIntExtra("privateChat", -1));
 
+        windowUserNmae = (TextView)findViewById(R.id.window_user_name);
 
         //初始化recyclerView
         recyclerView = (RecyclerView) findViewById(R.id.message_list_view);
@@ -97,7 +101,7 @@ public class ChatWindow extends AppCompatActivity {
         super.onStart();
         chatClientManager.setChatWindowListener(listener);
 
-        getWindow().setTitle(privateChat.getTargetUser().getUserID());
+        windowUserNmae.setText(privateChat.getTargetUser().getUserID());
     }
 
     @Override
