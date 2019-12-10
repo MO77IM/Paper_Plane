@@ -96,6 +96,8 @@ public class ChatWindow extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         chatClientManager.setChatWindowListener(listener);
+
+        getWindow().setTitle(privateChat.getTargetUser().getUserID());
     }
 
     @Override

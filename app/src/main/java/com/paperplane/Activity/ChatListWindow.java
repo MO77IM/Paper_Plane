@@ -35,6 +35,7 @@ public class ChatListWindow extends AppCompatActivity {
     private Button addChatButton;//测试按钮
     private EditText userIdInput;
 
+    private Intent networkIntent = null;
 
     NetworkService.NetworkBinder networkBinder;
 
@@ -55,6 +56,10 @@ public class ChatListWindow extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
+
+
+        this.networkIntent = new Intent(this, NetworkService.class);
+        startService(networkIntent);
 
         chatClientManager = ChatClientManager.getInstance();
 
@@ -80,7 +85,7 @@ public class ChatListWindow extends AppCompatActivity {
                 NetworkListener listener = new NetworkListener() {
                     @Override
                     public void onReceived(String content) {
-                        if(content == null){
+                        if(content == "{}"){
                             Toast.makeText(ChatListWindow.this,"未找到用户", Toast.LENGTH_SHORT).show();
                         }
                         else {
@@ -89,6 +94,7 @@ public class ChatListWindow extends AppCompatActivity {
                                 chatClientManager.startChat(new UserAccount(userJson));
                             }
                         }
+                        userIdInput.setText("");
                     }
                 };
 

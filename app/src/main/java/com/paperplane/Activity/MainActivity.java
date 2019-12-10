@@ -78,8 +78,6 @@ public class MainActivity extends Activity {
         /**
          * 启动网络服务
          */
-        this.networkIntent = new Intent(this, NetworkService.class);
-        startService(networkIntent);
 
         ChatClientManager chatClientManager = ChatClientManager.getInstance();
 

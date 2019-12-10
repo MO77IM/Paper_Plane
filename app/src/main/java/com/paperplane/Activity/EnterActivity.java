@@ -101,7 +101,7 @@ public class EnterActivity extends AppCompatActivity implements View.OnClickList
 
     private void solveLoginResult(boolean result){
         if (result){
-            Intent intent = new Intent(EnterActivity.this, MainActivity.class);
+            Intent intent = new Intent(EnterActivity.this, ChatListWindow.class);
             startActivity(intent);
             finish();//销毁
         }else{
