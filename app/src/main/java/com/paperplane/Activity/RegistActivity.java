@@ -147,5 +147,6 @@ public class RegistActivity extends AppCompatActivity implements View.OnClickLis
     private void returnEnter() {
         Intent intent=new Intent(this, EnterActivity.class);
         startActivity(intent);
+        finish();
     }
 }
