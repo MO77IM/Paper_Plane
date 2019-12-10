@@ -89,7 +89,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         void setData(Object object){
             super.setData(object);
             ChatWindowMessage message = (ChatWindowMessage)object;
-            user_icon.setImageResource(message.getIcon());
+            //user_icon.setImageResource(message.getIcon());
+            user_icon.setImageResource(R.drawable.blue);
             text.setText(message.getContent());
         }
     }
@@ -108,7 +109,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         void setData(Object object) {
             super.setData(object);
             ChatWindowMessage message = (ChatWindowMessage)object;
-            user_icon.setImageResource(message.getIcon());
+            //user_icon.setImageResource(message.getIcon());
+            user_icon.setImageResource(R.drawable.blue);
             text.setText(message.getContent());
         }
     }
